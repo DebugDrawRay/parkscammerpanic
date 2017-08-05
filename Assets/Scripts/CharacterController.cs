@@ -162,6 +162,7 @@ public class CharacterController : MonoBehaviour
                     
                     transaction.StartTransaction(currentCustomer);
                     inTransaction = true;
+                    currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(true);
                 }
             }
             else
@@ -174,12 +175,14 @@ public class CharacterController : MonoBehaviour
                         currentItem = null;
                     }
                     currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Active);
+                    currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
                     inTransaction = false;
                     currentCustomer = null;
                 }
             }
             if (inTransaction)
             {
+                currentCustomer.GetComponent<CustomerController>().UpdateDollarSign(transaction.GetTransactionValue());
                 if (actions.Yell0.WasPressed)
                 {
                     Yell(currentCustomer.GetComponent<CustomerController>());
@@ -206,7 +209,7 @@ public class CharacterController : MonoBehaviour
     private void UpdateInteractionRadius()
     {
         interactionVisual.transform.localScale = Vector3.one * currentInteractionRadius;
-        if (currentInteractionRadius > baseInteractionRadius)
+        if (currentInteractionRadius > baseInteractionRadius && !inTransaction)
         {
             currentInteractionRadius -= ambientRadiusDecrease;
         }
@@ -252,13 +255,20 @@ public class CharacterController : MonoBehaviour
         }
         return customer;
     }
-
+    //WOO WOO
     private void CheckForThePolice()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
         if (hits.Length > 0)
         {
-            GameManager.Instance.GameOver();
+            if(GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
+            {
+                GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
+            }
+            else
+            {
+                GameManager.Instance.GameOver();
+            }
         }
     }
 

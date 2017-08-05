@@ -503,9 +503,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAccel: 0.5
   maxSpeed: 10
-  baseInteractionRadius: 5
+  baseInteractionRadius: 7.5
   caughtInteractionRadius: 1
-  yellRadiusIncrease: 0.25
+  yellRadiusIncrease: 1.5
   ambientRadiusDecrease: 0.1
   customerMask:
     serializedVersion: 2
