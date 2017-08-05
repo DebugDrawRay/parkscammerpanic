@@ -14,7 +14,13 @@ public class CharacterController : MonoBehaviour
     private Vector3 currentDirection;
 
     private Rigidbody rigid;
-    private TransactionManager transaction;
+    private TransactionManager transaction
+	{
+		get
+		{
+			return TransactionManager.Instance;
+		}
+	}
 
     private PlayerActions actions;
 
@@ -50,7 +56,6 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        transaction = GetComponent<TransactionManager>();
         Instance = this;
 
         currentState = State.Active;
