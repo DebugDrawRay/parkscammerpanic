@@ -1,0 +1,216 @@
+fileFormatVersion: 2
+guid: 216283655097a744ea37dcaeaed7ebce
+timeCreated: 1501916815
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Base Human
+    100004: Base HumanLPlatform
+    100006: Base HumanPelvis
+    100008: Base HumanRPlatform
+    100010: Box001
+    100012: Base HumanHead
+    100014: Base HumanLCalf
+    100016: Base HumanLCollarbone
+    100018: Base HumanLFoot
+    100020: Base HumanLForearm
+    100022: Base HumanLPalm
+    100024: Base HumanLThigh
+    100026: Base HumanLUpperarm
+    100028: Base HumanNeck1
+    100030: Base HumanNeck2
+    100032: Base HumanRCalf
+    100034: Base HumanRCollarbone
+    100036: Base HumanRFoot
+    100038: Base HumanRForearm
+    100040: Base HumanRibcage
+    100042: Base HumanRPalm
+    100044: Base HumanRThigh
+    100046: Base HumanRUpperarm
+    100048: Base HumanSpine1
+    100050: Base HumanSpine2
+    100052: Base HumanSpine3
+    100054: Base HumanSpine4
+    100056: Bip001
+    100058: Bip001 Head
+    100060: Bip001 L Calf
+    100062: Bip001 L Clavicle
+    100064: Bip001 L Finger0
+    100066: Bip001 L Foot
+    100068: Bip001 L Forearm
+    100070: Bip001 L Hand
+    100072: Bip001 L Thigh
+    100074: Bip001 L Toe0
+    100076: Bip001 L Toe01
+    100078: Bip001 L Toe02
+    100080: Bip001 L UpperArm
+    100082: Bip001 Neck
+    100084: Bip001 Pelvis
+    100086: Bip001 R Calf
+    100088: Bip001 R Clavicle
+    100090: Bip001 R Finger0
+    100092: Bip001 R Foot
+    100094: Bip001 R Forearm
+    100096: Bip001 R Hand
+    100098: Bip001 R Thigh
+    100100: Bip001 R Toe0
+    100102: Bip001 R Toe01
+    100104: Bip001 R Toe02
+    100106: Bip001 R UpperArm
+    100108: Bip001 Spine
+    100110: Bip001 Spine1
+    100112: Bip001 Spine2
+    100114: Bip001 Spine3
+    100116: Box002
+    100118: Bone001
+    100120: Bone002
+    100122: Bone003
+    400000: //RootNode
+    400002: Base Human
+    400004: Base HumanLPlatform
+    400006: Base HumanPelvis
+    400008: Base HumanRPlatform
+    400010: Box001
+    400012: Base HumanHead
+    400014: Base HumanLCalf
+    400016: Base HumanLCollarbone
+    400018: Base HumanLFoot
+    400020: Base HumanLForearm
+    400022: Base HumanLPalm
+    400024: Base HumanLThigh
+    400026: Base HumanLUpperarm
+    400028: Base HumanNeck1
+    400030: Base HumanNeck2
+    400032: Base HumanRCalf
+    400034: Base HumanRCollarbone
+    400036: Base HumanRFoot
+    400038: Base HumanRForearm
+    400040: Base HumanRibcage
+    400042: Base HumanRPalm
+    400044: Base HumanRThigh
+    400046: Base HumanRUpperarm
+    400048: Base HumanSpine1
+    400050: Base HumanSpine2
+    400052: Base HumanSpine3
+    400054: Base HumanSpine4
+    400056: Bip001
+    400058: Bip001 Head
+    400060: Bip001 L Calf
+    400062: Bip001 L Clavicle
+    400064: Bip001 L Finger0
+    400066: Bip001 L Foot
+    400068: Bip001 L Forearm
+    400070: Bip001 L Hand
+    400072: Bip001 L Thigh
+    400074: Bip001 L Toe0
+    400076: Bip001 L Toe01
+    400078: Bip001 L Toe02
+    400080: Bip001 L UpperArm
+    400082: Bip001 Neck
+    400084: Bip001 Pelvis
+    400086: Bip001 R Calf
+    400088: Bip001 R Clavicle
+    400090: Bip001 R Finger0
+    400092: Bip001 R Foot
+    400094: Bip001 R Forearm
+    400096: Bip001 R Hand
+    400098: Bip001 R Thigh
+    400100: Bip001 R Toe0
+    400102: Bip001 R Toe01
+    400104: Bip001 R Toe02
+    400106: Bip001 R UpperArm
+    400108: Bip001 Spine
+    400110: Bip001 Spine1
+    400112: Bip001 Spine2
+    400114: Bip001 Spine3
+    400116: Box002
+    400118: Bone001
+    400120: Bone002
+    400122: Bone003
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Humantest
+    4300002: Box001
+    4300004: Box002
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Box001
+    13700002: Box002
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: "Avatar creation failed:\n\tCannot find root motion transform
+      'Base HumanPelvis'.\n"
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: Bone001
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
