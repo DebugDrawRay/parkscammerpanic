@@ -25,16 +25,20 @@ public class TransactionManager : MonoBehaviour
         _currentTransaction = new Transaction(customer);
     }
 
-    public void CompleteCurrentTransaction()
+    public bool CompleteCurrentTransaction()
     {
         Debug.Log("Ending Transaction");
+        float value = 0;
         if (_currentTransaction != null)
         {
             GameManager.Instance.AddToScore(_currentTransaction.TransactionValue);
+            value = _currentTransaction.TransactionValue;
             _currentTransaction = null;
         }
 
         UIManager.Instance.HideOptions();
+
+        return value > 0;
     }
 
     public void ChooseOption(int option)

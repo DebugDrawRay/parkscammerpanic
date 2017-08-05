@@ -12,7 +12,6 @@ public class PoliceController : AiController
 			return CharacterController.Instance;
 		}
 	}
-	private NavMeshAgent agent;
 
 	public enum State
 	{
@@ -22,9 +21,9 @@ public class PoliceController : AiController
 	}
 	private State currentState;
 
-	private void Awake()
+	private void Start()
 	{
-		agent = GetComponent<NavMeshAgent>();
+		Initialize();
 	}
 	public void Aggravate()
 	{
@@ -38,6 +37,9 @@ public class PoliceController : AiController
 	{
 		switch(currentState)
 		{
+			case State.Idle:
+			UpdateWander();
+			break;
 			case State.Chase:
 			ChasePlayer();
 			break;
