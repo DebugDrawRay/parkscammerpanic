@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: f92b9acaa6080f5469cecfefd551c7a2
-timeCreated: 1501956826
+guid: 5feae1775c24a2f44bcaeb734bbaf8a4
+timeCreated: 1501964237
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
@@ -9,9 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: StorefrontBase
-    4300002: Plane001
-    4300004: StorefrontA
+    4300000: Storefront_Filler
   materials:
     importMaterials: 1
     materialName: 0
@@ -39,7 +37,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 2
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
