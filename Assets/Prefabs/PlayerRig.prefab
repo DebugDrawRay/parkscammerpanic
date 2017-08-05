@@ -518,7 +518,10 @@ MonoBehaviour:
     m_Bits: 2048
   interactionVisual: {fileID: 4019899627974478}
   itemContainer: {fileID: 4568078999735172}
-  currentState: 0
+  yellVisual: {fileID: 1807610112687950, guid: 2c59b5b23db751144bc003903fb07edf, type: 2}
+  yellTime: 0
+  yellEase: 0
+  yellLocationRadius: 1
 --- !u!114 &114789815129302724
 MonoBehaviour:
   m_ObjectHideFlags: 1
