@@ -104,17 +104,24 @@ public class CharacterController : MonoBehaviour
 
     private void TransactionListener()
     {
-        GameObject newCustomer = GetClosestCustomer();
-		if(newCustomer != currentCustomer)
+		if(!inTransaction)
 		{
-			currentCustomer = newCustomer;
-			transaction.StartTransaction(currentCustomer);
-			inTransaction = true;
+        	GameObject newCustomer = GetClosestCustomer();
+			if(newCustomer != null)
+			{
+				currentCustomer = newCustomer;
+				transaction.StartTransaction(currentCustomer);
+				inTransaction = true;
+			}
 		}
-        if (currentCustomer == null && inTransaction)
+		else
 		{
-			transaction.CompleteCurrentTransaction();
-			inTransaction = false;
+			if(currentCustomer != null && Vector3.Distance(transform.position, currentCustomer.transform.position) >= baseInteractionRadius)
+			{
+				currentCustomer = null;
+				inTransaction = false;
+				transaction.CompleteCurrentTransaction();
+			}			
 		}
         if(inTransaction)
 		{
