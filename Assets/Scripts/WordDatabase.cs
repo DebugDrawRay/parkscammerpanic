@@ -53,8 +53,9 @@ public static class WordDatabase
             Word w = new Word();
 
             string[] rawWord = results[i].Split(',');
-            w.Text = rawWord[0];
-            w.Value = Convert.ToInt32(rawWord[1]);
+            w.Id = i;
+            w.Text = rawWord[0].Trim();
+            w.Value = Convert.ToInt32(rawWord[1].Trim());
 
             _words[i] = w;
 
@@ -67,37 +68,48 @@ public static class WordDatabase
         }
     }
 
-    public static Word GetRandomWord()
+    public static int GetWordValue(int wordId)
     {
-        int randomIndex = UnityEngine.Random.Range(0, Words.Length);
-        return Words[randomIndex];
+        return _words[wordId].Value;
     }
 
-    public static Word GetRandomWordByValue(int value)
+    public static string GetWordText(int wordId)
+    {
+        return _words[wordId].Text;
+    }
+
+    public static int GetRandomWordId()
+    {
+        int randomIndex = UnityEngine.Random.Range(0, Words.Length);
+        return Words[randomIndex].Id;
+    }
+
+    public static int GetRandomWordIdByValue(int value)
     {
         if (WordsByValue.ContainsKey(value))
         {
             int randomIndex = UnityEngine.Random.Range(0, WordsByValue[value].Count);
-            return Words[WordsByValue[value][randomIndex]];
+            return Words[WordsByValue[value][randomIndex]].Id;
         }
 
         Debug.LogWarning("No words found with Value " + value);
-        return new Word();
+        return -1;
     }
 
-    public static Word[] GetRandomWordSet()
+    public static int[] GetRandomWordIdSet()
     {
-        Word[] words = new Word[4];
-        words[0] = GetRandomWordByValue(-2);
-        words[1] = GetRandomWordByValue(-1);
-        words[2] = GetRandomWordByValue(1);
-        words[3] = GetRandomWordByValue(2);
+        int[] words = new int[4];
+        words[0] = GetRandomWordIdByValue(-2);
+        words[1] = GetRandomWordIdByValue(-1);
+        words[2] = GetRandomWordIdByValue(1);
+        words[3] = GetRandomWordIdByValue(2);
         return words;
     }
 }
 
 public struct Word
 {
+    public int Id;
     public string Text;
     public int Value;
 }

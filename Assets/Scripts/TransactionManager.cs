@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class TransactionManager : MonoBehaviour
 
     public void StartTransaction(GameObject customer)
     {
+        Debug.Log("Starting Transaction");
         if (_currentTransaction != null)
         {
             CompleteCurrentTransaction();
@@ -25,16 +27,22 @@ public class TransactionManager : MonoBehaviour
 
     public void CompleteCurrentTransaction()
     {
+        Debug.Log("Ending Transaction");
         if (_currentTransaction != null)
         {
-            //Send value to Game Manager;
+            GameManager.Instance.AddToScore(_currentTransaction.TransactionValue);
             _currentTransaction = null;
         }
+
+        UIManager.Instance.HideOptions();
     }
 
-    public void ChooseOption(int optionNumber)
+    public void ChooseOption(int option)
     {
-
+        if (_currentTransaction != null)
+        {
+            _currentTransaction.ChooseOption(option);
+        }
     }
 }
 
@@ -51,26 +59,27 @@ public class Transaction
         }
     }
 
-    private Word[] _currentWordSet; 
+    private int[] _currentWords;
 
     public Transaction(GameObject customer)
     {
         Customer = customer;
+
         UpdateWords();
     }
 
-    public void SubmitWord(int wordIndex)
+    public void ChooseOption(int option)
     {
-        if (wordIndex < _currentWordSet.Length)
-        {
-            _transactionValue += _currentWordSet[wordIndex].Value;
-        }
+        float value = WordDatabase.GetWordValue(_currentWords[option]);
+        _transactionValue += value;
+        UIManager.Instance.UpdateTransactionScore(_transactionValue, value);
+
         UpdateWords();
     }
 
     private void UpdateWords()
     {
-        _currentWordSet = WordDatabase.GetRandomWordSet();
-        UIManager.Instance.UpdateOptions(_currentWordSet);
+        _currentWords = WordDatabase.GetRandomWordIdSet().Shuffle().ToArray();
+        UIManager.Instance.UpdateOptions(_currentWords);
     }
 }
