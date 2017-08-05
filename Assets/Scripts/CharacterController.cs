@@ -12,7 +12,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 currentDirection;
 
     private Rigidbody rigid;
-    private TransactionManager transaction;
+    private TransactionManager TransactionManager;
 
     private PlayerActions actions;
 
@@ -42,7 +42,6 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        transaction = GetComponent<TransactionManager>();
         currentState = State.Active;
         actions = PlayerActions.BindAll();
     }
@@ -110,7 +109,7 @@ public class CharacterController : MonoBehaviour
 			if(newCustomer != null)
 			{
 				currentCustomer = newCustomer;
-				transaction.StartTransaction(currentCustomer);
+				TransactionManager.Instance.StartTransaction(currentCustomer);
 				inTransaction = true;
 			}
 		}
@@ -120,26 +119,26 @@ public class CharacterController : MonoBehaviour
 			{
 				currentCustomer = null;
 				inTransaction = false;
-				transaction.CompleteCurrentTransaction();
+                TransactionManager.Instance.CompleteCurrentTransaction();
 			}			
 		}
         if(inTransaction)
 		{
             if (actions.Yell0.WasPressed)
             {
-                transaction.ChooseOption(0);
+                TransactionManager.Instance.ChooseOption(0);
             }
             if (actions.Yell1.WasPressed)
             {
-                transaction.ChooseOption(1);
+                TransactionManager.Instance.ChooseOption(1);
             }
             if (actions.Yell2.WasPressed)
             {
-                transaction.ChooseOption(2);
+                TransactionManager.Instance.ChooseOption(2);
             }
             if (actions.Yell3.WasPressed)
             {
-                transaction.ChooseOption(3);
+                TransactionManager.Instance.ChooseOption(3);
             }
         }
     }
