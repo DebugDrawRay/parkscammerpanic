@@ -1,0 +1,4 @@
+Great,2
+Good,1
+Bad,-1
+Worst,-2
