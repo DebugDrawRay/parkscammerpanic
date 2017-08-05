@@ -21,6 +21,8 @@ public class PoliceController : AiController
 		Chase
 	}
 
+	public float moneyToTake;
+	
     private State previousState = State.None;
     private State _currentState;
     private State currentState

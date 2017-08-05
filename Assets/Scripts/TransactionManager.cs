@@ -12,6 +12,17 @@ public class TransactionManager : MonoBehaviour
         Instance = this;
     }
 
+    public float GetTransactionValue()
+    {
+        if(_currentTransaction != null)
+        {
+            return _currentTransaction.TransactionValue;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     public void StartTransaction(GameObject customer)
     {
         Debug.Log("Starting Transaction");

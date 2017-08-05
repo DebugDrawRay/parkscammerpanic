@@ -211,7 +211,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1675080037776510}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4618399229958992}
@@ -240,7 +240,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1802642243459874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.39, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4450473280010224}
@@ -268,7 +268,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1739353479493574}
   m_LocalRotation: {x: 0.22958493, y: 0.00016802223, z: -0.000039634047, w: 0.97328866}
-  m_LocalPosition: {x: 0, y: 5, z: -10}
+  m_LocalPosition: {x: 0, y: 6.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4403976869282180}
@@ -282,7 +282,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1489581475465658}
   m_LocalRotation: {x: 0.22958493, y: 0.00016802223, z: -0.000039634047, w: 0.97328866}
-  m_LocalPosition: {x: 0, y: 5, z: -10}
+  m_LocalPosition: {x: 0, y: 6.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4115299593362590}
@@ -503,9 +503,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAccel: 0.5
   maxSpeed: 10
-  baseInteractionRadius: 5
+  baseInteractionRadius: 7.5
   caughtInteractionRadius: 1
-  yellRadiusIncrease: 0.25
+  yellRadiusIncrease: 1.5
   ambientRadiusDecrease: 0.1
   customerMask:
     serializedVersion: 2
@@ -519,8 +519,8 @@ MonoBehaviour:
   interactionVisual: {fileID: 4019899627974478}
   itemContainer: {fileID: 4568078999735172}
   yellVisual: {fileID: 1807610112687950, guid: 2c59b5b23db751144bc003903fb07edf, type: 2}
-  yellTime: 0
-  yellEase: 0
+  yellTime: 1
+  yellEase: 25
   yellLocationRadius: 1
 --- !u!114 &114789815129302724
 MonoBehaviour:

@@ -1,7 +1,5 @@
 fileFormatVersion: 2
-guid: c79225fb5f6de8f448ff83390294ca7f
-timeCreated: 1501968228
-licenseType: Free
+guid: 3f384eec689a4c74b8b1cc32fa4416e4
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
@@ -10,6 +8,7 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Storefront_Base
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -79,7 +78,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
