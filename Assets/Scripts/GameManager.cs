@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
-
-	public void AddToScore(float score)
+    
+    public void AddToScore(float score)
     {
         _score += score;
         UIManager.Instance.UpdateScore(_score);
