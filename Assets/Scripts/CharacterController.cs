@@ -229,6 +229,7 @@ public class CharacterController : MonoBehaviour
                 currentItem = newItem;
                 currentItem.transform.position = itemContainer.position;
                 currentItem.transform.SetParent(itemContainer);
+                SpawnManager.Instance.RemovedItem();
             }
         }
     }

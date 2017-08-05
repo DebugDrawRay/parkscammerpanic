@@ -77,6 +77,7 @@ public class CustomerController : AiController
 		currentItem.layer = 0;
         currentItem.transform.position = itemContainer.position;
         currentItem.transform.SetParent(itemContainer);
+        SpawnManager.Instance.RemovedCustomer();
     }
 
     private void OnGameStateChanged(GameState gameState)
