@@ -41,11 +41,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartGame();
+        SpawnManager.Instance.InitializeLevel();
     }
 
     public void AddToScore(float score)
     {
-        _score += score;
+        _score += Mathf.Max(0, score);
         UIManager.Instance.UpdateScore(_score);
     }
 

@@ -84,7 +84,7 @@ public class Transaction
     public void ChooseOption(int option)
     {
         float value = WordDatabase.GetWordValue(_currentWords[option]);
-        _transactionValue += value;
+        _transactionValue += value;    
         UIManager.Instance.UpdateTransactionScore(_transactionValue, value);
 
         UpdateWords();
