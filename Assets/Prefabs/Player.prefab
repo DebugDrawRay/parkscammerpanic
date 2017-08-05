@@ -152,6 +152,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAccel: 0.5
   maxSpeed: 10
+  baseInteractionRadius: 5
+  yellRadiusIncrease: 0
+  ambientRadiusDecrease: 0
+  customerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  policeMask:
+    serializedVersion: 2
+    m_Bits: 512
   currentState: 0
 --- !u!136 &136340490508294344
 CapsuleCollider:
