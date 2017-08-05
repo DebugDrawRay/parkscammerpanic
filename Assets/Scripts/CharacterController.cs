@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController : MonoBehaviour
 {
-	public static CharacterController Instance;
+    public static CharacterController Instance;
 
     [Header("Movement")]
     public float moveAccel;
@@ -23,17 +23,22 @@ public class CharacterController : MonoBehaviour
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
     public LayerMask customerMask;
-	public LayerMask policeMask;
-	public Transform interactionVisual;
+    public LayerMask policeMask;
+    public LayerMask itemMask;
+    public Transform interactionVisual;
+
+    [Header("Items")]
+    public Transform itemContainer;
+    private GameObject currentItem;
 
     public float currentInteractionRadius
-	{
-		get;
-		private set;
-	}
+    {
+        get;
+        private set;
+    }
 
     private GameObject currentCustomer;
-	private bool inTransaction;
+    private bool inTransaction;
 
     public enum State
     {
@@ -46,12 +51,12 @@ public class CharacterController : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         transaction = GetComponent<TransactionManager>();
-		Instance = this;
+        Instance = this;
 
         currentState = State.Active;
         actions = PlayerActions.BindAll();
 
-		currentInteractionRadius = baseInteractionRadius;
+        currentInteractionRadius = baseInteractionRadius;
     }
 
     private void Update()
@@ -71,8 +76,9 @@ public class CharacterController : MonoBehaviour
                 break;
             case State.Active:
                 TransactionListener();
-				AggravatePolice();
-				UpdateInteractionRadius();
+                AggravatePolice();
+                UpdateInteractionRadius();
+                UpdateHeldItem();
                 break;
         }
     }
@@ -112,57 +118,86 @@ public class CharacterController : MonoBehaviour
 
     private void TransactionListener()
     {
-		if(!inTransaction)
-		{
-        	GameObject newCustomer = GetClosestCustomer();
-			if(newCustomer != null)
-			{
-				currentCustomer = newCustomer;
-				transaction.StartTransaction(currentCustomer);
-				inTransaction = true;
-			}
-		}
-		else
-		{
-			if(currentCustomer != null && Vector3.Distance(transform.position, currentCustomer.transform.position) >= baseInteractionRadius)
-			{
-				currentCustomer = null;
-				inTransaction = false;
-				transaction.CompleteCurrentTransaction();
-			}			
-		}
-        if(inTransaction)
-		{
-            if (actions.Yell0.WasPressed)
+        if (currentItem != null)
+        {
+            if (!inTransaction)
             {
-				currentInteractionRadius += yellRadiusIncrease;
-                transaction.ChooseOption(0);
+                GameObject newCustomer = GetClosestCustomer();
+                if (newCustomer != null)
+                {
+                    currentCustomer = newCustomer;
+                    transaction.StartTransaction(currentCustomer);
+                    inTransaction = true;
+                }
             }
-            if (actions.Yell1.WasPressed)
+            else
             {
-				currentInteractionRadius += yellRadiusIncrease;
-                transaction.ChooseOption(1);
+                if (currentCustomer != null && Vector3.Distance(transform.position, currentCustomer.transform.position) >= baseInteractionRadius)
+                {
+                    currentCustomer = null;
+                    inTransaction = false;
+                    transaction.CompleteCurrentTransaction();
+					Destroy(currentItem);
+					currentItem = null;
+                }
             }
-            if (actions.Yell2.WasPressed)
+            if (inTransaction)
             {
-				currentInteractionRadius += yellRadiusIncrease;
-                transaction.ChooseOption(2);
-            }
-            if (actions.Yell3.WasPressed)
-            {
-				currentInteractionRadius += yellRadiusIncrease;
-                transaction.ChooseOption(3);
+                if (actions.Yell0.WasPressed)
+                {
+                    currentInteractionRadius += yellRadiusIncrease;
+                    transaction.ChooseOption(0);
+                }
+                if (actions.Yell1.WasPressed)
+                {
+                    currentInteractionRadius += yellRadiusIncrease;
+                    transaction.ChooseOption(1);
+                }
+                if (actions.Yell2.WasPressed)
+                {
+                    currentInteractionRadius += yellRadiusIncrease;
+                    transaction.ChooseOption(2);
+                }
+                if (actions.Yell3.WasPressed)
+                {
+                    currentInteractionRadius += yellRadiusIncrease;
+                    transaction.ChooseOption(3);
+                }
             }
         }
     }
-	private void UpdateInteractionRadius()
-	{
-		interactionVisual.transform.localScale = Vector3.one * currentInteractionRadius;
-		if(currentInteractionRadius > baseInteractionRadius)
-		{
-			currentInteractionRadius -= ambientRadiusDecrease;
-		}
-	}
+    private void UpdateInteractionRadius()
+    {
+        interactionVisual.transform.localScale = Vector3.one * currentInteractionRadius;
+        if (currentInteractionRadius > baseInteractionRadius)
+        {
+            currentInteractionRadius -= ambientRadiusDecrease;
+        }
+    }
+    private void UpdateHeldItem()
+    {
+        if (currentItem == null)
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position, baseInteractionRadius, itemMask);
+			GameObject newItem = null;
+            float currentDistance = baseInteractionRadius;
+            foreach (Collider hit in hits)
+            {
+                float dist = Vector3.Distance(transform.position, hit.transform.position);
+                if (dist <= currentDistance)
+                {
+                    newItem = hit.gameObject;
+                    currentDistance = dist;
+                }
+            }
+			if(newItem != null)
+			{
+				currentItem = newItem;
+				currentItem.transform.position = itemContainer.position;
+				currentItem.transform.SetParent(itemContainer);
+			}
+        }
+    }
     private GameObject GetClosestCustomer()
     {
         GameObject customer = null;
@@ -180,13 +215,13 @@ public class CharacterController : MonoBehaviour
         }
         return customer;
     }
-	
-	private void AggravatePolice()
-	{
+
+    private void AggravatePolice()
+    {
         Collider[] hits = Physics.OverlapSphere(transform.position, currentInteractionRadius, policeMask);
         foreach (Collider hit in hits)
         {
-			hit.GetComponent<PoliceController>().Aggravate();
+            hit.GetComponent<PoliceController>().Aggravate();
         }
-	}
+    }
 }
