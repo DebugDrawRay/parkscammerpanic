@@ -33,17 +33,18 @@ public class CharacterController : MonoBehaviour
     public LayerMask itemMask;
     public Transform interactionVisual;
 
-    [Header("Items")]
-    public Transform itemContainer;
-    private GameObject currentItem;
-
-    [Header("Yell")]
-    public 
     public float currentInteractionRadius
     {
         get;
         private set;
     }
+
+    [Header("Items")]
+    public Transform itemContainer;
+    private GameObject currentItem;
+
+    [Header("Yell")]
+    public GameObject yellVisual;
 
     private GameObject currentCustomer;
     private bool inTransaction;

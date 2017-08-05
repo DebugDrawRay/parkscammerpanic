@@ -469,6 +469,7 @@ MonoBehaviour:
     m_Bits: 2048
   interactionVisual: {fileID: 4019899627974478}
   itemContainer: {fileID: 4568078999735172}
+  yellVisual: {fileID: 0}
   currentState: 0
 --- !u!114 &114492420411368704
 MonoBehaviour:
