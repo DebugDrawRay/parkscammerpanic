@@ -37,6 +37,8 @@ public class CharacterController : MonoBehaviour
     public Transform itemContainer;
     private GameObject currentItem;
 
+    [Header("Yell")]
+    public 
     public float currentInteractionRadius
     {
         get;
