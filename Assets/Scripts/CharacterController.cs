@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController : MonoBehaviour
 {
+	public static CharacterController Instance;
+
     [Header("Movement")]
     public float moveAccel;
     public float maxSpeed;
@@ -22,6 +24,7 @@ public class CharacterController : MonoBehaviour
     public float ambientRadiusDecrease;
     public LayerMask customerMask;
 	public LayerMask policeMask;
+	public Transform interactionVisual;
 
     public float currentInteractionRadius
 	{
@@ -43,8 +46,12 @@ public class CharacterController : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         transaction = GetComponent<TransactionManager>();
+		Instance = this;
+
         currentState = State.Active;
         actions = PlayerActions.BindAll();
+
+		currentInteractionRadius = baseInteractionRadius;
     }
 
     private void Update()
@@ -65,6 +72,7 @@ public class CharacterController : MonoBehaviour
             case State.Active:
                 TransactionListener();
 				AggravatePolice();
+				UpdateInteractionRadius();
                 break;
         }
     }
@@ -127,23 +135,34 @@ public class CharacterController : MonoBehaviour
 		{
             if (actions.Yell0.WasPressed)
             {
+				currentInteractionRadius += yellRadiusIncrease;
                 transaction.ChooseOption(0);
             }
             if (actions.Yell1.WasPressed)
             {
+				currentInteractionRadius += yellRadiusIncrease;
                 transaction.ChooseOption(1);
             }
             if (actions.Yell2.WasPressed)
             {
+				currentInteractionRadius += yellRadiusIncrease;
                 transaction.ChooseOption(2);
             }
             if (actions.Yell3.WasPressed)
             {
+				currentInteractionRadius += yellRadiusIncrease;
                 transaction.ChooseOption(3);
             }
         }
     }
-
+	private void UpdateInteractionRadius()
+	{
+		interactionVisual.transform.localScale = Vector3.one * currentInteractionRadius;
+		if(currentInteractionRadius > baseInteractionRadius)
+		{
+			currentInteractionRadius -= ambientRadiusDecrease;
+		}
+	}
     private GameObject GetClosestCustomer()
     {
         GameObject customer = null;
@@ -167,7 +186,7 @@ public class CharacterController : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, currentInteractionRadius, policeMask);
         foreach (Collider hit in hits)
         {
-			//implement police aggro
+			hit.GetComponent<PoliceController>().Aggravate();
         }
 	}
 }
