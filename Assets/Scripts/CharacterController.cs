@@ -12,6 +12,8 @@ public class CharacterController : MonoBehaviour
 	private Vector3 currentDirection;
 
     private Rigidbody rigid;
+	private TransactionManager transaction;
+
     private PlayerActions actions;
 
     public enum State
@@ -24,6 +26,7 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+		transaction = GetComponent<TransactionManager>();
         currentState = State.Active;
         actions = PlayerActions.BindAll();
     }
@@ -44,6 +47,7 @@ public class CharacterController : MonoBehaviour
             case State.Idle:
                 break;
             case State.Active:
+			
                 break;
         }
     }
