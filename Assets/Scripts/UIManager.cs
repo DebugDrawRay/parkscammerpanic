@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
     public GameObject OptionsPanel;
+    public GameObject GameOverPanel;
     public GameObject[] Options;
     public Text CurrentTransactionScore;
     public Text TotalScore;
@@ -56,8 +58,18 @@ public class UIManager : MonoBehaviour
         OptionsPanel.SetActive(false);
     }
 
+    public void ShowGameOverPanel()
+    {
+        GameOverPanel.SetActive(true);
+    }
+
     public void OnOptionClick(int optionId)
     {
         TransactionManager.Instance.ChooseOption(optionId);
+    }
+
+    public void OnReturnToMainMenuClick()
+    {
+        SceneManager.LoadScene(Scenes.StartScreen.ToString());
     }
 }

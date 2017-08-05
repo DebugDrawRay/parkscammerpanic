@@ -26,6 +26,7 @@ public class CharacterController : MonoBehaviour
 
     [Header("Interaction")]
     public float baseInteractionRadius;
+    public float caughtInteractionRadius;
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
     public LayerMask customerMask;
@@ -48,22 +49,40 @@ public class CharacterController : MonoBehaviour
 
     public enum State
     {
+        None,
         Idle,
         Active
     }
-    public State currentState;
+    private State _currentState;
+    private State previousState = State.None;
+    public State currentState
+    {
+        get { return _currentState; }
+        set
+        {
+            previousState = _currentState;
+            _currentState = value;
+        }
+    }
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         Instance = this;
 
-        currentState = State.Active;
+        currentState = State.Idle;
         actions = PlayerActions.BindAll();
 
         currentInteractionRadius = baseInteractionRadius;
     }
-
+    private void OnEnable()
+    {
+        GameManager.GameStateChanged += OnGameStateChanged;
+    }
+    private void OnDisable()
+    {
+        GameManager.GameStateChanged -= OnGameStateChanged;
+    }
     private void Update()
     {
         RunStates();
@@ -84,6 +103,7 @@ public class CharacterController : MonoBehaviour
                 AggravatePolice();
                 UpdateInteractionRadius();
                 UpdateHeldItem();
+                CheckForThePolice();
                 break;
         }
     }
@@ -223,12 +243,38 @@ public class CharacterController : MonoBehaviour
         return customer;
     }
 
+    private void CheckForThePolice()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
+        if (hits.Length > 0)
+        {
+            GameManager.Instance.GameOver();
+        }
+    }
+
     private void AggravatePolice()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, currentInteractionRadius, policeMask);
         foreach (Collider hit in hits)
         {
             hit.GetComponent<PoliceController>().Aggravate();
+        }
+    }
+
+    private void OnGameStateChanged(GameState gameState)
+    {
+        Debug.Log("Character : State Change");
+        switch (gameState)
+        {
+            case GameState.Paused:
+                currentState = State.Idle;
+                break;
+            case GameState.Playing:
+                currentState = State.Active;
+                break;
+            default:
+                currentState = State.Idle;
+                break;
         }
     }
 }
