@@ -158,6 +158,8 @@ public class CharacterController : MonoBehaviour
                 if (newCustomer != null && !newCustomer.GetComponent<CustomerController>().hasItem)
                 {
                     currentCustomer = newCustomer;
+                    currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Attentive);
+                    
                     transaction.StartTransaction(currentCustomer);
                     inTransaction = true;
                 }
@@ -171,6 +173,7 @@ public class CharacterController : MonoBehaviour
                         currentCustomer.GetComponent<CustomerController>().GiveItem(currentItem);
                         currentItem = null;
                     }
+                    currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Active);
                     inTransaction = false;
                     currentCustomer = null;
                 }
