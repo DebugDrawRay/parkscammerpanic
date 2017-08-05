@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController : MonoBehaviour
@@ -45,6 +46,9 @@ public class CharacterController : MonoBehaviour
 
     [Header("Yell")]
     public GameObject yellVisual;
+    public float yellTime;
+    public Ease yellEase;
+    public float yellLocationRadius = 1;
 
     private GameObject currentCustomer;
     private bool inTransaction;
@@ -155,22 +159,22 @@ public class CharacterController : MonoBehaviour
             {
                 if (actions.Yell0.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(0);
                 }
                 if (actions.Yell1.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(1);
                 }
                 if (actions.Yell2.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(2);
                 }
                 if (actions.Yell3.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(3);
                 }
             }
@@ -233,5 +237,19 @@ public class CharacterController : MonoBehaviour
         {
             hit.GetComponent<PoliceController>().Aggravate();
         }
+    }
+    private void Yell(CustomerController customer)
+    {
+        currentInteractionRadius += yellRadiusIncrease;
+
+        Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
+        Vector3 from = transform.position + rand;
+        from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
+        GameObject yell = Instantiate(yellVisual, from, Quaternion.identity);
+
+        rand = Random.insideUnitSphere * yellLocationRadius;
+        Vector3 to = customer.transform.position + rand;
+        to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
     }
 }
