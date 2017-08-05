@@ -1,7 +1,5 @@
 fileFormatVersion: 2
-guid: f92b9acaa6080f5469cecfefd551c7a2
-timeCreated: 1501956826
-licenseType: Free
+guid: a41da6f6499a0f04d8e60fa101d22d1a
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
@@ -9,9 +7,8 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: StorefrontBase
-    4300002: Plane001
-    4300004: StorefrontA
+    4300000: StorefrontOuterCornerB
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -81,7 +78,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
