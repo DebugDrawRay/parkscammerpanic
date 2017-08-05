@@ -15,12 +15,12 @@ public class CharacterController : MonoBehaviour
 
     private Rigidbody rigid;
     private TransactionManager transaction
-	{
-		get
-		{
-			return TransactionManager.Instance;
-		}
-	}
+    {
+        get
+        {
+            return TransactionManager.Instance;
+        }
+    }
 
     private PlayerActions actions;
 
@@ -128,7 +128,7 @@ public class CharacterController : MonoBehaviour
             if (!inTransaction)
             {
                 GameObject newCustomer = GetClosestCustomer();
-                if (newCustomer != null)
+                if (newCustomer != null && !newCustomer.GetComponent<CustomerController>().hasItem)
                 {
                     currentCustomer = newCustomer;
                     transaction.StartTransaction(currentCustomer);
@@ -139,11 +139,13 @@ public class CharacterController : MonoBehaviour
             {
                 if (currentCustomer != null && Vector3.Distance(transform.position, currentCustomer.transform.position) >= baseInteractionRadius)
                 {
-                    currentCustomer = null;
+                    if (transaction.CompleteCurrentTransaction())
+                    {
+                        currentCustomer.GetComponent<CustomerController>().GiveItem(currentItem);
+                        currentItem = null;
+                    }
                     inTransaction = false;
-                    transaction.CompleteCurrentTransaction();
-					Destroy(currentItem);
-					currentItem = null;
+                    currentCustomer = null;
                 }
             }
             if (inTransaction)
@@ -184,7 +186,7 @@ public class CharacterController : MonoBehaviour
         if (currentItem == null)
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, baseInteractionRadius, itemMask);
-			GameObject newItem = null;
+            GameObject newItem = null;
             float currentDistance = baseInteractionRadius;
             foreach (Collider hit in hits)
             {
@@ -195,12 +197,12 @@ public class CharacterController : MonoBehaviour
                     currentDistance = dist;
                 }
             }
-			if(newItem != null)
-			{
-				currentItem = newItem;
-				currentItem.transform.position = itemContainer.position;
-				currentItem.transform.SetParent(itemContainer);
-			}
+            if (newItem != null)
+            {
+                currentItem = newItem;
+                currentItem.transform.position = itemContainer.position;
+                currentItem.transform.SetParent(itemContainer);
+            }
         }
     }
     private GameObject GetClosestCustomer()
