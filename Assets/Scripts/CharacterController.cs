@@ -51,6 +51,8 @@ public class CharacterController : MonoBehaviour
     public float ambientMoneyLoss = 1;
     public float timeToMoneyLoss = 1;
     private float currentTimeToLoss;
+    public int maxFailures = 3;
+    private int currentFailures;
 
     [Header("Yell")]
     public GameObject yellVisual;
@@ -120,6 +122,7 @@ public class CharacterController : MonoBehaviour
                 UpdateHeldItem();
                 CheckForThePolice();
                 UpdateMoney();
+                CheckCustomer();
                 break;
         }
     }
@@ -132,6 +135,18 @@ public class CharacterController : MonoBehaviour
             case State.Active:
                 MovementListener();
                 break;
+        }
+    }
+    private void CheckCustomer()
+    {
+        if (inTransaction && currentCustomer != null && currentFailures >= maxFailures)
+        {
+            transaction.CompleteCurrentTransaction();
+            currentCustomer.GetComponent<CustomerController>().GiveItem(new GameObject());
+            currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
+            inTransaction = false;
+            currentCustomer = null;
+            currentFailures = 0;
         }
     }
     private void UpdateMoney()
@@ -205,6 +220,7 @@ public class CharacterController : MonoBehaviour
                     currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
                     inTransaction = false;
                     currentCustomer = null;
+                    currentFailures = 0;
                 }
             }
             if (inTransaction)
@@ -337,10 +353,13 @@ public class CharacterController : MonoBehaviour
         if (WordDatabase.GetWordValue(word) < 0)
         {
             yell.color = Color.red;
+            currentFailures++;
         }
         else
         {
             yell.color = Color.green;
+            currentFailures--;
+            currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
         }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
@@ -375,7 +394,7 @@ public class CharacterController : MonoBehaviour
         Vector3 from = transform.position + rand;
         from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
-        yell.text = "$" + (amount*GameSettings.ValueToMoney).ToString();
+        yell.text = "$" + (amount * GameSettings.ValueToMoney).ToString();
 
         yell.color = Color.red;
 
