@@ -432,7 +432,6 @@ public class CharacterController : MonoBehaviour
 
     private void Yell(GameObject customer, int word)
     {
-        Debug.Log(word);
         currentInteractionRadius += yellRadiusIncrease;
 
         Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
@@ -451,7 +450,7 @@ public class CharacterController : MonoBehaviour
         }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell.gameObject)).SetEase(yellEase);
     }
 
     private void RecieveMoney(CustomerController customer, float value)
@@ -471,7 +470,7 @@ public class CharacterController : MonoBehaviour
         }
         Vector3 to = transform.position + rand;
         to.y = Mathf.Clamp(to.y, transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell.gameObject)).SetEase(yellEase);
     }
 
     private void LoseMoney(GameObject customer, float amount)
@@ -488,7 +487,7 @@ public class CharacterController : MonoBehaviour
 
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell.gameObject)).SetEase(yellEase);
     }
 
 }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4946012748672642}
   - component: {fileID: 33276548557782290}
   - component: {fileID: 23561430803834958}
+  - component: {fileID: 135162528190085428}
   m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
@@ -38,7 +39,6 @@ GameObject:
   - component: {fileID: 4027626138442628}
   - component: {fileID: 114540516881813292}
   - component: {fileID: 54881099894366052}
-  - component: {fileID: 135445000797164534}
   m_Layer: 11
   m_Name: Item
   m_TagString: Untagged
@@ -142,15 +142,15 @@ MonoBehaviour:
   - {fileID: 4300000, guid: 77f7f9af8e7abf047a82ba6340c6b24f, type: 3}
   - {fileID: 4300000, guid: 8acaab98934f81947bea4552023baea1, type: 3}
   - {fileID: 4300000, guid: 291d28872a6f8e843b51a4142d19d8b3, type: 3}
---- !u!135 &135445000797164534
+--- !u!135 &135162528190085428
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1770393684889048}
+  m_GameObject: {fileID: 1266990954712066}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.17109066
+  m_Center: {x: 0.000000029802322, y: 0.051648334, z: 0}
