@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController : MonoBehaviour
@@ -185,23 +186,19 @@ public class CharacterController : MonoBehaviour
                 currentCustomer.GetComponent<CustomerController>().UpdateDollarSign(transaction.GetTransactionValue());
                 if (actions.Yell0.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(0);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(0));
                 }
                 if (actions.Yell1.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(1);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(1));
                 }
                 if (actions.Yell2.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(2);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(2));
                 }
                 if (actions.Yell3.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(3);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(3));
                 }
             }
         }
@@ -301,16 +298,24 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    private void Yell(CustomerController customer)
+    private void Yell(CustomerController customer, int word)
     {
+        Debug.Log(word);
         currentInteractionRadius += yellRadiusIncrease;
 
         Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
         Vector3 from = transform.position + rand;
         from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
-        GameObject yell = Instantiate(yellVisual, from, Quaternion.identity);
-
-        rand = Random.insideUnitSphere * yellLocationRadius;
+        TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
+        yell.text = WordDatabase.GetWordText(word);
+        if(WordDatabase.GetWordValue(word) < 0)
+        {
+            yell.color = Color.red;
+        }
+        else
+        {
+            yell.color = Color.green;
+        }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
         yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
