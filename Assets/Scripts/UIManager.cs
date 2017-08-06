@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
 
     private bool _hidden = true;
     private Text[] _optionButtonTexts;
-    private Button[] _optionButtons;
 
     private void Awake()
     {
@@ -25,11 +24,13 @@ public class UIManager : MonoBehaviour
         {
             _optionButtonTexts[i] = Options[i].GetComponentInChildren<Text>();
         }
+        TotalScore.text = "$0.00";
     }
 
     public void UpdateScore(float score)
     {
-        TotalScore.text = score.ToString();
+        score = Mathf.Clamp(score, 0, Mathf.Infinity);
+        TotalScore.text = "$" + (score * GameSettings.ValueToMoney).ToString()+".00";
         UpdateTransactionScore(0, 0);
     }
 
@@ -70,6 +71,6 @@ public class UIManager : MonoBehaviour
 
     public void OnReturnToMainMenuClick()
     {
-        SceneManager.LoadScene(Scenes.StartScreen.ToString());
+        SceneManager.LoadScene("StartScreen");
     }
 }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-[RequireComponent(typeof(UnityEngine.AI.NavMeshAgent))]
+
+[RequireComponent(typeof(NavMeshAgent))]
 public class AiController : MonoBehaviour 
 {
     [Header("Wandering")]
