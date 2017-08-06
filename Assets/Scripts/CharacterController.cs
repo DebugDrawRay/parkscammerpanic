@@ -212,19 +212,19 @@ public class CharacterController : MonoBehaviour
                 currentCustomer.GetComponent<CustomerController>().UpdateDollarSign(transaction.GetTransactionValue());
                 if (actions.Yell0.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(0));
+                    Yell(currentCustomer, transaction.ChooseOption(0));
                 }
                 if (actions.Yell1.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(1));
+                    Yell(currentCustomer, transaction.ChooseOption(1));
                 }
                 if (actions.Yell2.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(2));
+                    Yell(currentCustomer, transaction.ChooseOption(2));
                 }
                 if (actions.Yell3.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(3));
+                    Yell(currentCustomer, transaction.ChooseOption(3));
                 }
             }
         }
@@ -288,6 +288,7 @@ public class CharacterController : MonoBehaviour
             if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
+                LoseMoney(hits[0].gameObject, -hits[0].GetComponent<PoliceController>().moneyToTake);
                 PoliceController.ResetAll();
             }
             else
@@ -323,7 +324,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    private void Yell(CustomerController customer, int word)
+    private void Yell(GameObject customer, int word)
     {
         Debug.Log(word);
         currentInteractionRadius += yellRadiusIncrease;
@@ -365,4 +366,22 @@ public class CharacterController : MonoBehaviour
         to.y = Mathf.Clamp(to.y, transform.position.y, Mathf.Infinity);
         yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
     }
+
+    private void LoseMoney(GameObject customer, float amount)
+    {
+        currentInteractionRadius += yellRadiusIncrease;
+
+        Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
+        Vector3 from = transform.position + rand;
+        from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
+        TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
+        yell.text = "$" + (amount*GameSettings.ValueToMoney).ToString();
+
+        yell.color = Color.red;
+
+        Vector3 to = customer.transform.position + rand;
+        to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+    }
+
 }
