@@ -11,6 +11,8 @@ public class SpawnManager : MonoBehaviour
     public SpawnGroup PoliceSpawnGroup;
     public SpawnGroup ItemSpawnGroup;
 
+    public Transform[] PolicePatrolPoints;
+
     public NavMeshAgent NavAgent;
 
     private void Awake()
@@ -22,27 +24,25 @@ public class SpawnManager : MonoBehaviour
     {
         Debug.Log("Initalizing Spawning");
         SpawnThings(CustomerSpawnGroup);
+        SpawnThings(ItemSpawnGroup);
+        SpawnThings(PoliceSpawnGroup);
     }
 
     public void SpawnThings(SpawnGroup spawnGroup)
     {
-        int spawnCount = 0;
         int loopCount = 0;
-        while (spawnCount < spawnGroup.TargetCount)
+        while (spawnGroup.CurrentCount < spawnGroup.TargetCount)
         {         
             int spawnIndex = Random.Range(0, spawnGroup.SpawnPoints.Length);
             Vector3 position = spawnGroup.SpawnPoints[spawnIndex].SpawnTransform.position 
                 + (Random.insideUnitSphere * spawnGroup.SpawnPoints[spawnIndex].SpawnRadius);
-            position.y = 0;
-
-            Debug.Log("Proposed Position: " + position);
+            position.y = 0.5f;
 
             NavMeshPath path = new NavMeshPath();
             if (NavAgent.CalculatePath(position, path))
             {
-                Debug.Log("Valid Position! Spawning Object");
                 Instantiate(spawnGroup.Prefab, position, Quaternion.identity);
-                spawnCount++;
+                spawnGroup.CurrentCount++;
             }
 
             loopCount++;
@@ -54,12 +54,38 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    public void RemovedItem()
+    {
+        ItemSpawnGroup.CurrentCount--;
+        SpawnThings(ItemSpawnGroup);
+    }
+
+    public void RemovedCustomer()
+    {
+        CustomerSpawnGroup.CurrentCount--;
+        SpawnThings(CustomerSpawnGroup);
+    }
+
+    public void RemovedPolice()
+    {
+        PoliceSpawnGroup.CurrentCount--;
+        SpawnThings(PoliceSpawnGroup);
+    }
+
+    public Transform[] GetPolicePatrolPoints()
+    {
+        return PolicePatrolPoints;
+    }
+
     [System.Serializable]
     public class SpawnGroup
     {
         public int TargetCount;
         public SpawnPoint[] SpawnPoints;
         public GameObject Prefab;
+
+        [HideInInspector]
+        public int CurrentCount = 0;
     }
 
     [System.Serializable]

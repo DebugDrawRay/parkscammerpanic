@@ -43,7 +43,10 @@ public class PoliceController : AiController
     {
         GameManager.GameStateChanged -= OnGameStateChanged;
     }
-
+    private void Awake()
+    {
+        patrolPoints = SpawnManager.Instance.GetPolicePatrolPoints();
+    }
     private void Start()
 	{
 		Initialize();
@@ -61,7 +64,7 @@ public class PoliceController : AiController
 		switch(currentState)
 		{
 			case State.Patrol:
-			    UpdateWander();
+			    UpdatePatrol();
 			    break;
 			case State.Chase:
 			    ChasePlayer();

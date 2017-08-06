@@ -59,7 +59,6 @@ public class CustomerController : AiController
     private void Start()
     {
         Initialize();
-        currentState = State.Idle;
     }
 
     private void Update()
@@ -89,6 +88,7 @@ public class CustomerController : AiController
         currentItem.layer = 0;
         currentItem.transform.position = itemContainer.position;
         currentItem.transform.SetParent(itemContainer);
+        SpawnManager.Instance.RemovedCustomer();
     }
 
     private void OnGameStateChanged(GameState gameState)
