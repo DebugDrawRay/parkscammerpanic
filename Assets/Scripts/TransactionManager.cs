@@ -40,13 +40,12 @@ public class TransactionManager : MonoBehaviour
         float value = 0;
         if (_currentTransaction != null)
         {
-            GameManager.Instance.AddToScore(_currentTransaction.TransactionValue);
+            GameManager.Instance.AddToScore(Mathf.Max(0, _currentTransaction.TransactionValue));
             value = _currentTransaction.TransactionValue;
             _currentTransaction = null;
         }
 
         UIManager.Instance.HideOptions();
-
         return value > 0;
     }
 

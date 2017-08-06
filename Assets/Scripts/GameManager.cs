@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     public void AddToScore(float score)
     {
-        _score += Mathf.Max(0, score);
+        _score += score;
         UIManager.Instance.UpdateScore(_score);
     }
 

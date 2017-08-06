@@ -265,6 +265,7 @@ public class CharacterController : MonoBehaviour
             if(GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
+                Destroy(hits[0].gameObject);
             }
             else
             {
