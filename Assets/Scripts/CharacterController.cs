@@ -157,7 +157,7 @@ public class CharacterController : MonoBehaviour
         if (inTransaction && currentCustomer != null && currentFailures >= maxFailures)
         {
             transaction.CompleteCurrentTransaction();
-            currentCustomer.GetComponent<CustomerController>().GiveItem(new GameObject());
+            currentCustomer.GetComponent<CustomerController>().GiveItem(new GameObject(), true);
             currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
             inTransaction = false;
             currentCustomer = null;
@@ -206,6 +206,7 @@ public class CharacterController : MonoBehaviour
             currentDirection = move;
             currentSpeed += moveAccel;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+            visual.transform.forward = currentDirection.normalized;
         }
         Vector3 movement = currentDirection * currentSpeed;
         rigid.MovePosition(transform.position + (movement * Time.deltaTime));
@@ -380,7 +381,7 @@ public class CharacterController : MonoBehaviour
         currentState = State.Idle;
         PoliceController.Open();
         yield return new WaitForSeconds(2f);
-        GameManager.Instance.AddToScore(police.moneyToTake);
+        GameManager.Instance.AddToScore(-police.moneyToTake);
         LoseMoney(police.gameObject, police.moneyToTake);
         yield return new WaitForSeconds(2f);
         PoliceController.ResetAll();
@@ -445,7 +446,7 @@ public class CharacterController : MonoBehaviour
         Vector3 from = customer.transform.position + rand;
         from.y = Mathf.Clamp(from.y, customer.transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
-        yell.text = "$" + (value * GameSettings.ValueToMoney).ToString();
+        yell.text = "+$" + (value * GameSettings.ValueToMoney).ToString();
         if (value > 0)
         {
             yell.color = Color.green;
@@ -467,7 +468,7 @@ public class CharacterController : MonoBehaviour
         Vector3 from = transform.position + rand;
         from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
-        yell.text = "$" + (amount * GameSettings.ValueToMoney).ToString();
+        yell.text = "-$" + (amount * GameSettings.ValueToMoney).ToString();
 
         yell.color = Color.red;
 

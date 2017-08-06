@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 4323367d692def2409382c5d49dfd87e
-timeCreated: 1502009952
+guid: 8ccb3d8240365ee49ad156a03cc472ce
+timeCreated: 1502050253
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Player
+    4300000: Plane002
   materials:
     importMaterials: 1
     materialName: 0
@@ -37,7 +37,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.4
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
