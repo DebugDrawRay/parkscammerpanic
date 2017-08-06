@@ -14,6 +14,7 @@ public class AiController : MonoBehaviour
     public Transform[] patrolPoints;
     private Vector3 currentDestination;
     private bool patrolDestinationSet;
+    private float patrolPauseCountdown = 0;
 
     private float currentWanderTime;
 
@@ -49,19 +50,33 @@ public class AiController : MonoBehaviour
 
     protected void UpdatePatrol()
     {
-        if (patrolDestinationSet)
+        if (patrolPoints.Length > 0)
         {
-            if (Vector3.Distance(transform.position, currentDestination) < 0.5f)
+            if (patrolDestinationSet)
             {
-                patrolDestinationSet = false;
+                if (Vector3.Distance(transform.position, currentDestination) < 0.5f)
+                {
+                    patrolDestinationSet = false;
+                    patrolPauseCountdown = 2f;
+                }
+            }
+            else
+            {
+                if (patrolPauseCountdown <= 0)
+                {
+                    currentDestination = GetRandomPatrolPoint();
+                    agent.SetDestination(currentDestination);
+                    patrolDestinationSet = true;
+                }
+                else
+                {
+                    patrolPauseCountdown -= Time.deltaTime;
+                }
             }
         }
         else
         {
-            currentDestination = GetRandomPatrolPoint();
-            Debug.Log("Current Destination set to " + currentDestination);
-            agent.SetDestination(currentDestination);
-            patrolDestinationSet = true;
+            UpdateWander();
         }
     }
 
