@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController : MonoBehaviour
@@ -27,6 +28,7 @@ public class CharacterController : MonoBehaviour
 
     [Header("Interaction")]
     public float baseInteractionRadius;
+    public float itemInteractionRadius;
     public float caughtInteractionRadius;
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
@@ -44,6 +46,11 @@ public class CharacterController : MonoBehaviour
     [Header("Items")]
     public Transform itemContainer;
     private GameObject currentItem;
+
+    [Header("Transaction")]
+    public float ambientMoneyLoss = 1;
+    public float timeToMoneyLoss = 1;
+    private float currentTimeToLoss;
 
     [Header("Yell")]
     public GameObject yellVisual;
@@ -81,6 +88,7 @@ public class CharacterController : MonoBehaviour
         actions = PlayerActions.BindAll();
 
         currentInteractionRadius = baseInteractionRadius;
+        currentTimeToLoss = timeToMoneyLoss;
     }
     private void OnEnable()
     {
@@ -111,6 +119,7 @@ public class CharacterController : MonoBehaviour
                 UpdateInteractionRadius();
                 UpdateHeldItem();
                 CheckForThePolice();
+                UpdateMoney();
                 break;
         }
     }
@@ -123,6 +132,21 @@ public class CharacterController : MonoBehaviour
             case State.Active:
                 MovementListener();
                 break;
+        }
+    }
+    private void UpdateMoney()
+    {
+        if (inTransaction)
+        {
+            if (currentTimeToLoss > 0)
+            {
+                currentTimeToLoss -= Time.deltaTime;
+            }
+            else
+            {
+                GameManager.Instance.AddToScore(-ambientMoneyLoss);
+                currentTimeToLoss = timeToMoneyLoss;
+            }
         }
     }
     private void MovementListener()
@@ -159,7 +183,7 @@ public class CharacterController : MonoBehaviour
                 {
                     currentCustomer = newCustomer;
                     currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Attentive);
-                    
+
                     transaction.StartTransaction(currentCustomer);
                     inTransaction = true;
                     currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(true);
@@ -169,11 +193,14 @@ public class CharacterController : MonoBehaviour
             {
                 if (currentCustomer != null && Vector3.Distance(transform.position, currentCustomer.transform.position) >= baseInteractionRadius)
                 {
-                    if (transaction.CompleteCurrentTransaction())
+                    float transVal = transaction.CompleteCurrentTransaction();
+                    if (transVal > 0)
                     {
                         currentCustomer.GetComponent<CustomerController>().GiveItem(currentItem);
                         currentItem = null;
                     }
+                    RecieveMoney(currentCustomer.GetComponent<CustomerController>(), transVal);
+
                     currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Active);
                     currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
                     inTransaction = false;
@@ -185,23 +212,19 @@ public class CharacterController : MonoBehaviour
                 currentCustomer.GetComponent<CustomerController>().UpdateDollarSign(transaction.GetTransactionValue());
                 if (actions.Yell0.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(0);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(0));
                 }
                 if (actions.Yell1.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(1);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(1));
                 }
                 if (actions.Yell2.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(2);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(2));
                 }
                 if (actions.Yell3.WasPressed)
                 {
-                    Yell(currentCustomer.GetComponent<CustomerController>());
-                    transaction.ChooseOption(3);
+                    Yell(currentCustomer.GetComponent<CustomerController>(), transaction.ChooseOption(3));
                 }
             }
         }
@@ -218,9 +241,9 @@ public class CharacterController : MonoBehaviour
     {
         if (currentItem == null)
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, baseInteractionRadius, itemMask);
+            Collider[] hits = Physics.OverlapSphere(transform.position, itemInteractionRadius, itemMask);
             GameObject newItem = null;
-            float currentDistance = baseInteractionRadius;
+            float currentDistance = itemInteractionRadius;
             foreach (Collider hit in hits)
             {
                 float dist = Vector3.Distance(transform.position, hit.transform.position);
@@ -262,11 +285,10 @@ public class CharacterController : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
         if (hits.Length > 0)
         {
-            if(GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
+            if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
-                SpawnManager.Instance.RemovedPolice();
-                Destroy(hits[0].gameObject);
+                PoliceController.ResetAll();
             }
             else
             {
@@ -301,18 +323,46 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    private void Yell(CustomerController customer)
+    private void Yell(CustomerController customer, int word)
     {
+        Debug.Log(word);
         currentInteractionRadius += yellRadiusIncrease;
 
         Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
         Vector3 from = transform.position + rand;
         from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
-        GameObject yell = Instantiate(yellVisual, from, Quaternion.identity);
-
-        rand = Random.insideUnitSphere * yellLocationRadius;
+        TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
+        yell.text = WordDatabase.GetWordText(word);
+        if (WordDatabase.GetWordValue(word) < 0)
+        {
+            yell.color = Color.red;
+        }
+        else
+        {
+            yell.color = Color.green;
+        }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+    }
+
+    private void RecieveMoney(CustomerController customer, float value)
+    {
+        Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
+        Vector3 from = customer.transform.position + rand;
+        from.y = Mathf.Clamp(from.y, customer.transform.position.y, Mathf.Infinity);
+        TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
+        yell.text = "$" + (value * GameSettings.ValueToMoney).ToString();
+        if (value > 0)
+        {
+            yell.color = Color.green;
+        }
+        else
+        {
+            yell.color = Color.red;
+        }
+        Vector3 to = transform.position + rand;
+        to.y = Mathf.Clamp(to.y, transform.position.y, Mathf.Infinity);
         yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
     }
 }

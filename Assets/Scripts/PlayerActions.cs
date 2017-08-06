@@ -46,7 +46,12 @@ public class PlayerActions : PlayerActionSet
 		actions.Yell0.AddDefaultBinding(Key.UpArrow);
 		actions.Yell1.AddDefaultBinding(Key.LeftArrow);
 		actions.Yell2.AddDefaultBinding(Key.DownArrow);
-		actions.Yell3.AddDefaultBinding(Key.RightArrow);
+		actions.Yell3.AddDefaultBinding(Key.RightArrow);		
+		
+		actions.Yell0.AddDefaultBinding(InputControlType.Action4);
+		actions.Yell1.AddDefaultBinding(InputControlType.Action3);
+		actions.Yell2.AddDefaultBinding(InputControlType.Action1);
+		actions.Yell3.AddDefaultBinding(InputControlType.Action2);
 		return actions;
 	}
 }

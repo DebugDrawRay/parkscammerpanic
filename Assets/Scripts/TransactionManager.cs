@@ -34,7 +34,7 @@ public class TransactionManager : MonoBehaviour
         _currentTransaction = new Transaction(customer);
     }
 
-    public bool CompleteCurrentTransaction()
+    public float CompleteCurrentTransaction()
     {
         Debug.Log("Ending Transaction");
         float value = 0;
@@ -46,15 +46,17 @@ public class TransactionManager : MonoBehaviour
         }
 
         UIManager.Instance.HideOptions();
-        return value > 0;
+        return value;
     }
 
-    public void ChooseOption(int option)
+    public int ChooseOption(int option)
     {
+        int word = -1;
         if (_currentTransaction != null)
         {
-            _currentTransaction.ChooseOption(option);
+            word = _currentTransaction.ChooseOption(option);
         }
+        return word;
     }
 }
 
@@ -80,13 +82,16 @@ public class Transaction
         UpdateWords();
     }
 
-    public void ChooseOption(int option)
+    public int ChooseOption(int option)
     {
         float value = WordDatabase.GetWordValue(_currentWords[option]);
+        int id = _currentWords[option];
         _transactionValue += value;    
         UIManager.Instance.UpdateTransactionScore(_transactionValue, value);
 
         UpdateWords();
+        return id;
+
     }
 
     private void UpdateWords()
