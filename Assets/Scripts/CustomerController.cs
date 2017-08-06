@@ -59,7 +59,6 @@ public class CustomerController : AiController
     private void Start()
     {
         Initialize();
-        currentState = State.Idle;
     }
 
     private void Update()
