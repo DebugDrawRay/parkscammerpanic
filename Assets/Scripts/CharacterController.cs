@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviour
     private GameObject currentItem;
 
     [Header("Transaction")]
-    public float ambientMoneyLoss = 1;
+    public int ambientMoneyLoss = 1;
     public float timeToMoneyLoss = 1;
     private float currentTimeToLoss;
     public int maxFailures = 3;

@@ -6,12 +6,18 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [Header("Panels")]
     public GameObject OptionsPanel;
     public GameObject GameOverPanel;
     public GameObject StartScreenPanel;
+
+    [Header("Hud")]
     public GameObject[] Options;
     public Text CurrentTransactionScore;
     public Text TotalScore;
+
+    [Header("Game Over Panel")]
+    public Text HighScoreDisplay;
 
     private bool _hidden = true;
     private Text[] _optionButtonTexts;
@@ -66,8 +72,11 @@ public class UIManager : MonoBehaviour
         StartScreenPanel.SetActive(false);
     }
 
-    public void ShowGameOverPanel()
+    public void ShowGameOverPanel(int score, int highScore)
     {
+        string scoreDisp = System.String.Format("${0:0.00}", (score * GameSettings.ValueToMoney));
+        string highScoreDisp = System.String.Format("${0:0.00}", (highScore * GameSettings.ValueToMoney));
+        HighScoreDisplay.text = "Score: " + scoreDisp + "\r\n High Score: " + highScoreDisp;
         GameOverPanel.SetActive(true);
     }
 
