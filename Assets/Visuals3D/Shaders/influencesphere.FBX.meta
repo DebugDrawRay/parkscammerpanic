@@ -10,6 +10,7 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Sphere001
+    4300002: Influencesphere
   materials:
     importMaterials: 1
     materialName: 0
