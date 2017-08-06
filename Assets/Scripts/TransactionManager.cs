@@ -68,8 +68,8 @@ public class Transaction
 {
     public GameObject Customer;
 
-    private float _transactionValue = 0;
-    public float TransactionValue
+    private int _transactionValue = 0;
+    public int TransactionValue
     {
         get
         {
@@ -88,7 +88,7 @@ public class Transaction
 
     public int ChooseOption(int option)
     {
-        float value = WordDatabase.GetWordValue(_currentWords[option]);
+        int value = WordDatabase.GetWordValue(_currentWords[option]);
         int id = _currentWords[option];
         _transactionValue += value;    
         UIManager.Instance.UpdateTransactionScore(_transactionValue, value);

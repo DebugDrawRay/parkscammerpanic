@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviour
     private GameObject currentItem;
 
     [Header("Transaction")]
-    public float ambientMoneyLoss = 1;
+    public int ambientMoneyLoss = 1;
     public float timeToMoneyLoss = 1;
     private float currentTimeToLoss;
     public int maxFailures = 3;
@@ -59,6 +59,9 @@ public class CharacterController : MonoBehaviour
     public float yellTime;
     public Ease yellEase;
     public float yellLocationRadius = 1;
+
+    [Header("Cage")]
+    public GameObject cage;
 
     private GameObject currentCustomer;
     private bool inTransaction;
@@ -157,7 +160,7 @@ public class CharacterController : MonoBehaviour
         if (inTransaction && currentCustomer != null && currentFailures >= maxFailures)
         {
             transaction.CompleteCurrentTransaction();
-            currentCustomer.GetComponent<CustomerController>().GiveItem(new GameObject());
+            currentCustomer.GetComponent<CustomerController>().GiveItem(new GameObject(), true);
             currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
             inTransaction = false;
             currentCustomer = null;
@@ -206,6 +209,7 @@ public class CharacterController : MonoBehaviour
             currentDirection = move;
             currentSpeed += moveAccel;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+            visual.transform.forward = currentDirection.normalized;
         }
         Vector3 movement = currentDirection * currentSpeed;
         rigid.MovePosition(transform.position + (movement * Time.deltaTime));
@@ -369,18 +373,29 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.GameOver();
+                StartCoroutine(EndGame_Corouting());
             }
             acosted = true;
         }
     }
-
+    IEnumerator EndGame_Corouting()
+    {
+        currentState = State.Idle;
+        PoliceController.Open();
+        GameObject newCage = Instantiate(cage, transform.position + (transform.up * 20), Quaternion.identity);
+        bool cageWait = false;
+        newCage.transform.SetParent(visual);
+        newCage.transform.DOLocalMove(visual.localPosition, .5f).OnComplete(()=> cageWait = true).SetEase(Ease.Linear);
+        yield return new WaitUntil(()=> cageWait == true);
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.GameOver();
+    }
     IEnumerator LoseMoney_Coroutine(PoliceController police)
     {
         currentState = State.Idle;
         PoliceController.Open();
         yield return new WaitForSeconds(2f);
-        GameManager.Instance.AddToScore(police.moneyToTake);
+        GameManager.Instance.AddToScore(-police.moneyToTake);
         LoseMoney(police.gameObject, police.moneyToTake);
         yield return new WaitForSeconds(2f);
         PoliceController.ResetAll();
@@ -445,7 +460,7 @@ public class CharacterController : MonoBehaviour
         Vector3 from = customer.transform.position + rand;
         from.y = Mathf.Clamp(from.y, customer.transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
-        yell.text = "$" + (value * GameSettings.ValueToMoney).ToString();
+        yell.text = "+$" + (value * GameSettings.ValueToMoney).ToString();
         if (value > 0)
         {
             yell.color = Color.green;
@@ -467,7 +482,7 @@ public class CharacterController : MonoBehaviour
         Vector3 from = transform.position + rand;
         from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
-        yell.text = "$" + (amount * GameSettings.ValueToMoney).ToString();
+        yell.text = "-$" + (amount * GameSettings.ValueToMoney).ToString();
 
         yell.color = Color.red;
 

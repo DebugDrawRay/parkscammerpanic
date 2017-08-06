@@ -81,11 +81,21 @@ public class CustomerController : AiController
         currentState = state;
     }
 
-    public void Leave()
+    public void Leave(bool instant = false)
     {
         if (hasItem)
         {
-            StartCoroutine(Leave_Coroutine());
+            if (instant)
+            {
+                currentState = State.Idle;
+                Destroy(agent);
+                Destroy(GetComponent<Rigidbody>());
+                transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase).OnComplete(() => Destroy(gameObject));
+            }
+            else
+            {
+                StartCoroutine(Leave_Coroutine());
+            }
         }
     }
     IEnumerator Leave_Coroutine()
@@ -96,12 +106,12 @@ public class CustomerController : AiController
         Destroy(GetComponent<Rigidbody>());
         transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase).OnComplete(() => Destroy(gameObject));
     }
-    public void GiveItem(GameObject item)
+    public void GiveItem(GameObject item, bool instant = false)
     {
         currentItem = item;
         currentItem.transform.SetParent(null);
         currentItem.layer = 0;
-        currentItem.transform.DOMove(itemContainer.position, itemGetTime).SetEase(itemGetEase).OnComplete(() => { currentItem.transform.position = itemContainer.position; currentItem.transform.SetParent(itemContainer); Leave(); });
+        currentItem.transform.DOMove(itemContainer.position, itemGetTime).SetEase(itemGetEase).OnComplete(() => { currentItem.transform.position = itemContainer.position; currentItem.transform.SetParent(itemContainer); Leave(instant); });
         SpawnManager.Instance.RemovedCustomer();
     }
 
@@ -133,7 +143,7 @@ public class CustomerController : AiController
             signTween = dollarSign.transform.DOPunchPosition(transform.up, signAnimationTime, signVibrato, signElastic);
             lastValue = value;
         }
-        float scale = value / 10;
+        float scale = value / 5;
         Color baseCol = neutralColor;
         Color targetCol = positiveColor;
         if (scale > 0)
