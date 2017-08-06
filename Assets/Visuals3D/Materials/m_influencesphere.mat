@@ -65,13 +65,18 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OpacityMult: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _distance: 1.03
+    - _distance: 2.02
+    - _distanceclamp: 3.16
     m_Colors:
-    - _Color: {r: 0.7352941, g: 0.22707611, b: 0.22707611, a: 1}
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _color1: {r: 1, g: 0, b: 0, a: 0}
+    - _color2: {r: 0.07586217, g: 1, b: 0, a: 1}
+    - _color3: {r: 0.1172414, g: 0, b: 1, a: 1}
