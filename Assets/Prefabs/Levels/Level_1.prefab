@@ -1058,6 +1058,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4398291436121118}
   - component: {fileID: 114647704568785390}
+  - component: {fileID: 114095195823693722}
   m_Layer: 12
   m_Name: Level_1
   m_TagString: Untagged
@@ -1541,6 +1542,22 @@ GameObject:
   - component: {fileID: 4829392310447526}
   m_Layer: 12
   m_Name: item_point (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1687076098316952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4858504405255830}
+  - component: {fileID: 195309784337675928}
+  m_Layer: 12
+  m_Name: SpawnAgent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3299,6 +3316,7 @@ Transform:
   m_Children:
   - {fileID: 4977117365770734}
   - {fileID: 4093927601712798}
+  - {fileID: 4858504405255830}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -4228,6 +4246,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4487125194321432}
   m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4858504405255830
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1687076098316952}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -22.1, y: 0, z: 40.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4398291436121118}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4863507655270896
 Transform:
@@ -9226,6 +9257,79 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &114095195823693722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1433787942862904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6c017489dccd84e9cecc4d3e5a5251, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CustomerSpawnGroup:
+    TargetCount: 6
+    SpawnPoints:
+    - SpawnTransform: {fileID: 4086531065825016}
+      SpawnRadius: 5
+    - SpawnTransform: {fileID: 4680114633839898}
+      SpawnRadius: 5
+    - SpawnTransform: {fileID: 4546210940543002}
+      SpawnRadius: 5
+    - SpawnTransform: {fileID: 4778624944770620}
+      SpawnRadius: 5
+    - SpawnTransform: {fileID: 4929557557030436}
+      SpawnRadius: 5
+    - SpawnTransform: {fileID: 4781906446209118}
+      SpawnRadius: 5
+    Prefab: {fileID: 1977964614204212, guid: 677926459e9204645911bb219db76d07, type: 2}
+    CurrentCount: 0
+  PoliceSpawnGroup:
+    TargetCount: 3
+    SpawnPoints:
+    - SpawnTransform: {fileID: 4368466264015860}
+      SpawnRadius: 5
+    - SpawnTransform: {fileID: 4173044357479322}
+      SpawnRadius: 5
+    - SpawnTransform: {fileID: 4581470920070880}
+      SpawnRadius: 5
+    Prefab: {fileID: 1097878160168002, guid: 47c6e94aaab05c745a8a4ceddbd2ad7b, type: 2}
+    CurrentCount: 0
+  ItemSpawnGroup:
+    TargetCount: 15
+    SpawnPoints:
+    - SpawnTransform: {fileID: 4024648031659310}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4871443534426234}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4125773507612388}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4508543061434902}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4829392310447526}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4055190884312116}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4840739312045074}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4630270175889432}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4069893113181854}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4817264911199652}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4338181882091490}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4143665071632768}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4082063715022482}
+      SpawnRadius: 1
+    - SpawnTransform: {fileID: 4426196354748358}
+      SpawnRadius: 1
+    Prefab: {fileID: 1770393684889048, guid: a3d6d54708c4bed4ca1c17e9edd76919, type: 2}
+    CurrentCount: 0
+  NavAgent: {fileID: 195309784337675928}
 --- !u!114 &114110526919999494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9341,3 +9445,24 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 4.3930836
   m_Center: {x: 6.5779257, y: 0, z: 65.962585}
+--- !u!195 &195309784337675928
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1687076098316952}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
