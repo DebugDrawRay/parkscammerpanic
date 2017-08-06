@@ -70,6 +70,6 @@ public class UIManager : MonoBehaviour
 
     public void OnReturnToMainMenuClick()
     {
-        SceneManager.LoadScene(Scenes.StartScreen.ToString());
+        SceneManager.LoadScene("StartScreen");
     }
 }
