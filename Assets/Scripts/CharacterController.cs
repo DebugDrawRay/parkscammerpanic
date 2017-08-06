@@ -229,18 +229,54 @@ public class CharacterController : MonoBehaviour
                 if (actions.Yell0.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(0));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
                 if (actions.Yell1.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(1));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
                 if (actions.Yell2.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(2));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
                 if (actions.Yell3.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(3));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
             }
         }
@@ -296,22 +332,37 @@ public class CharacterController : MonoBehaviour
         return customer;
     }
     //WOO WOO
+    private bool acosted = false;
     private void CheckForThePolice()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
-        if (hits.Length > 0)
+        if (hits.Length > 0 && !acosted)
         {
             if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
-                GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
-                LoseMoney(hits[0].gameObject, -hits[0].GetComponent<PoliceController>().moneyToTake);
-                PoliceController.ResetAll();
+                StartCoroutine(LoseMoney_Coroutine(hits[0].GetComponent<PoliceController>()));
+
             }
             else
             {
                 GameManager.Instance.GameOver();
             }
+            acosted = true;
         }
+    }
+
+    IEnumerator LoseMoney_Coroutine(PoliceController police)
+    {
+        currentState = State.Idle;
+        PoliceController.Open();
+        yield return new WaitForSeconds(2f);
+        GameManager.Instance.AddToScore(police.moneyToTake);
+        LoseMoney(police.gameObject, police.moneyToTake);
+        yield return new WaitForSeconds(2f);
+        PoliceController.ResetAll();
+        yield return new WaitForSeconds(2f);
+        currentState = State.Active;
+        acosted = false;
     }
 
     private void AggravatePolice()
@@ -353,13 +404,11 @@ public class CharacterController : MonoBehaviour
         if (WordDatabase.GetWordValue(word) < 0)
         {
             yell.color = Color.red;
-            currentFailures++;
         }
         else
         {
             yell.color = Color.green;
-            currentFailures--;
-            currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+
         }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
