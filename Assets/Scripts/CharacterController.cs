@@ -450,7 +450,7 @@ public class CharacterController : MonoBehaviour
         }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell.gameObject)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => DestroyYell(yell.gameObject)).SetEase(yellEase);
     }
 
     private void RecieveMoney(CustomerController customer, float value)
@@ -470,7 +470,7 @@ public class CharacterController : MonoBehaviour
         }
         Vector3 to = transform.position + rand;
         to.y = Mathf.Clamp(to.y, transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell.gameObject)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => DestroyYell(yell.gameObject)).SetEase(yellEase);
     }
 
     private void LoseMoney(GameObject customer, float amount)
@@ -487,7 +487,11 @@ public class CharacterController : MonoBehaviour
 
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell.gameObject)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => DestroyYell(yell.gameObject)).SetEase(yellEase);
     }
 
+    private void DestroyYell(GameObject yellObj)
+    {
+        Destroy(yellObj.transform.parent.gameObject);
+    }
 }
