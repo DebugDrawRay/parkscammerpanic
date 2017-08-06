@@ -4,6 +4,8 @@ public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance;
 
+    public static float ValueToMoney = 1.0f;
+
     private GameInfo _currentGame;
 
     private void Awake()

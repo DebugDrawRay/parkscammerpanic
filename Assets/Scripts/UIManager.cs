@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
 
     private bool _hidden = true;
     private Text[] _optionButtonTexts;
-    private Button[] _optionButtons;
 
     private void Awake()
     {
@@ -29,13 +28,14 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore(float score)
     {
-        TotalScore.text = score.ToString();
+        TotalScore.text = (score * GameSettings.ValueToMoney).ToString();
         UpdateTransactionScore(0, 0);
     }
 
     public void UpdateTransactionScore(float score, float mod)
     {
-        CurrentTransactionScore.text = score.ToString() + " (" + mod + ")";
+        float money = score * GameSettings.ValueToMoney;
+        CurrentTransactionScore.text = money.ToString() + " (" + mod + ")";
     }
 
     public void UpdateOptions(int[] newWords)
