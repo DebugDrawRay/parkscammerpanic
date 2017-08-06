@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4577694334221100}
   - component: {fileID: 114211687251984866}
-  - component: {fileID: 114540882488924576}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -52,31 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b981705644a82e94fb4d929730009b21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114540882488924576
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1354930678481338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7b5e8de77c5b4597ae7fbfb49a95e22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logDebugInfo: 0
-  invertYAxis: 0
-  useFixedUpdate: 0
-  dontDestroyOnLoad: 0
-  suspendInBackground: 0
-  enableICade: 0
-  enableXInput: 0
-  xInputOverrideUpdateRate: 0
-  xInputUpdateRate: 0
-  xInputOverrideBufferSize: 0
-  xInputBufferSize: 0
-  enableNativeInput: 0
-  nativeInputEnableXInput: 1
-  nativeInputPreventSleep: 0
-  nativeInputOverrideUpdateRate: 0
-  nativeInputUpdateRate: 0
-  customProfiles: []
+  AdditionalCops: 0
+  AdditionalCopSpeed: 2
+  AdditionalCopMoney: 2

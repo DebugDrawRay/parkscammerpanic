@@ -131,6 +131,10 @@ public class CharacterController : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
+                if(actions.Submit.WasPressed)
+                {
+                    UIManager.Instance.HideStartScreen();
+                }
                 break;
             case State.Active:
                 TransactionListener();

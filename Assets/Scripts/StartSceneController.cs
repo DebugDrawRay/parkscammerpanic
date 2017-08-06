@@ -9,6 +9,7 @@ public class StartSceneController : MonoBehaviour
     public RectTransform StartScreen;
     public RectTransform LevelSelectScreen;
 
+    public Button startGameButton;
     [Header("Level Select")]
     public LevelSelection[] LevelSelections;
     public RectTransform LevelDisplay;
@@ -34,6 +35,7 @@ public class StartSceneController : MonoBehaviour
     {
         StartScreen.DOAnchorPos(new Vector3(-_offscreen, 0, 0), _scrollSpeed).SetEase(Ease.OutCubic);
         LevelSelectScreen.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutCubic);
+        startGameButton.Select();
     }
 
     public void NextLevel()
