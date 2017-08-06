@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartGame();
         SpawnManager.Instance.InitializeLevel();
+        StartGame();
     }
 
     public void AddToScore(float score)
