@@ -1,66 +1,15 @@
 fileFormatVersion: 2
-guid: 5f4960e32a8d1764fa02c10b9cae8758
-timeCreated: 1501975916
+guid: 35a102fe83c062d42ad66a51f5485bc7
+timeCreated: 1501977036
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
-    100000: CATRigLLegPlatform
-    100002: CATRigRLegPlatform
-    100004: CATRigSpine5
-    100006: Character001
-    100008: Characterbase
-    100010: Head
-    100012: LBicep
-    100014: LCalf
-    100016: LFoot
-    100018: LForearm
-    100020: LHand
-    100022: LThigh
-    100024: Neck
-    100026: Pelvis
-    100028: //RootNode
-    100030: RBicep
-    100032: RCalf
-    100034: RFoot
-    100036: RForearm
-    100038: RHand
-    100040: Ribcage
-    100042: RThigh
-    100044: Spine1
-    100046: Spine2
-    100048: Spine3
-    100050: Spine4
-    400000: CATRigLLegPlatform
-    400002: CATRigRLegPlatform
-    400004: CATRigSpine5
-    400006: Character001
-    400008: Characterbase
-    400010: Head
-    400012: LBicep
-    400014: LCalf
-    400016: LFoot
-    400018: LForearm
-    400020: LHand
-    400022: LThigh
-    400024: Neck
-    400026: Pelvis
-    400028: //RootNode
-    400030: RBicep
-    400032: RCalf
-    400034: RFoot
-    400036: RForearm
-    400038: RHand
-    400040: Ribcage
-    400042: RThigh
-    400044: Spine1
-    400046: Spine2
-    400048: Spine3
-    400050: Spine4
-    4300000: Characterbase
-    7400000: Take 001
-    9500000: //RootNode
-    13700000: Characterbase
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: WallBlock
   materials:
     importMaterials: 1
     materialName: 0
@@ -88,7 +37,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.025
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -124,13 +73,13 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: Pelvis
+    rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
