@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore(float score)
     {
-        TotalScore.text = (score * GameSettings.ValueToMoney).ToString();
+        TotalScore.text = "$" + (score * GameSettings.ValueToMoney).ToString()+".00";
         UpdateTransactionScore(0, 0);
     }
 
