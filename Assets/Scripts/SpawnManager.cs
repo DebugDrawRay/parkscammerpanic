@@ -11,6 +11,8 @@ public class SpawnManager : MonoBehaviour
     public SpawnGroup PoliceSpawnGroup;
     public SpawnGroup ItemSpawnGroup;
 
+    public Transform[] PolicePatrolPoints;
+
     public NavMeshAgent NavAgent;
 
     private void Awake()
@@ -68,6 +70,11 @@ public class SpawnManager : MonoBehaviour
     {
         PoliceSpawnGroup.CurrentCount--;
         SpawnThings(PoliceSpawnGroup);
+    }
+
+    public Transform[] GetPolicePatrolPoints()
+    {
+        return PolicePatrolPoints;
     }
 
     [System.Serializable]

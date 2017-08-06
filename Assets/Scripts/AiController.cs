@@ -10,6 +10,11 @@ public class AiController : MonoBehaviour
     public float wanderRadius;
     public Vector2 timeToWanderRange;
 
+    [Header("Patroling")]
+    public Transform[] patrolPoints;
+    private Vector3 currentDestination;
+    private bool patrolDestinationSet;
+
     private float currentWanderTime;
 
 	protected NavMeshAgent agent;
@@ -18,6 +23,7 @@ public class AiController : MonoBehaviour
     {
         homePosition = transform.position;
         currentWanderTime = Random.Range(timeToWanderRange.x, timeToWanderRange.y);
+        currentDestination = GetRandomPatrolPoint();
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -41,4 +47,34 @@ public class AiController : MonoBehaviour
         agent.SetDestination(pos);
     }
 
+    protected void UpdatePatrol()
+    {
+        if (patrolDestinationSet)
+        {
+            if (Vector3.Distance(transform.position, currentDestination) < 0.5f)
+            {
+                patrolDestinationSet = false;
+            }
+        }
+        else
+        {
+            currentDestination = GetRandomPatrolPoint();
+            Debug.Log("Current Destination set to " + currentDestination);
+            agent.SetDestination(currentDestination);
+            patrolDestinationSet = true;
+        }
+    }
+
+    private Vector3 GetRandomPatrolPoint()
+    {
+        Vector3 patrolPoint = Vector3.zero;
+        if (patrolPoints.Length > 0)
+        {
+            int patrolIndex = Random.Range(0, patrolPoints.Length);
+            patrolPoint = patrolPoints[patrolIndex].position;
+            patrolPoint.y = transform.position.y;
+        }
+
+        return patrolPoint;
+    }
 }
