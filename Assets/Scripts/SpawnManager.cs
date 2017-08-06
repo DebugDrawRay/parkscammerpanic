@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class SpawnManager : MonoBehaviour
@@ -14,6 +12,16 @@ public class SpawnManager : MonoBehaviour
     public Transform[] PolicePatrolPoints;
 
     public NavMeshAgent NavAgent;
+
+    private void OnEnable()
+    {
+        GameManager.GameEscalated += OnGameEscalated;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.GameEscalated -= OnGameEscalated;
+    }
 
     private void Awake()
     {
@@ -75,6 +83,12 @@ public class SpawnManager : MonoBehaviour
     public Transform[] GetPolicePatrolPoints()
     {
         return PolicePatrolPoints;
+    }
+
+    private void OnGameEscalated()
+    {
+        PoliceSpawnGroup.TargetCount += GameSettings.CopNumberIncrement;
+        SpawnThings(PoliceSpawnGroup);
     }
 
     [System.Serializable]

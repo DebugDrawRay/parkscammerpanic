@@ -46,32 +46,44 @@ public class PoliceController : AiController
         }
     }
 
+    private float _startSpeed;
+    private int _startMoney;
+
     private void OnEnable()
     {
         GameManager.GameStateChanged += OnGameStateChanged;
+        GameManager.GameEscalated += OnGameEscalated;
         ResetAll += ResetPolice;
         Open += OpenDrawer;
     }
+
     private void OnDisable()
     {
         GameManager.GameStateChanged -= OnGameStateChanged;
+        GameManager.GameEscalated -= OnGameEscalated;
         ResetAll -= ResetPolice;
         Open -= OpenDrawer;
     }
+
     private void OnDestroy()
     {
         ResetAll -= ResetPolice;
         Open -= OpenDrawer;
     }
+
     private void Awake()
     {
         patrolPoints = SpawnManager.Instance.GetPolicePatrolPoints();
         chaseLight.SetActive(false);
     }
+
     private void Start()
     {
         Initialize();
+        _startSpeed = agent.speed;
+        _startMoney = moneyToTake;
     }
+
     public void Aggravate()
     {
         currentState = State.Chase;
@@ -84,6 +96,7 @@ public class PoliceController : AiController
         }
 
     }
+
     private float currentLight = 0;
     private float currentDrawer = 0;
     private void Update()
@@ -92,6 +105,7 @@ public class PoliceController : AiController
         render.SetBlendShapeWeight(1, currentDrawer);
         RunStates();
     }
+
     private void RunStates()
     {
         switch (currentState)
@@ -104,20 +118,24 @@ public class PoliceController : AiController
                 break;
         }
     }
+
     private void ChasePlayer()
     {
         agent.SetDestination(player.transform.position);
     }
+
     private void OpenDrawer()
     {
         currentState = State.Idle;
         DOTween.To(() => currentDrawer, x => currentDrawer = x, 100, .5f);
     }
+
     public void ResetPolice()
     {
         SpawnManager.Instance.RemovedPolice();
         transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase).OnComplete(() => Destroy(gameObject));
     }
+
     private void OnGameStateChanged(GameState gameState)
     {
         Debug.Log("Police : State Change");
@@ -133,5 +151,11 @@ public class PoliceController : AiController
                 currentState = State.Idle;
                 break;
         }
+    }
+
+    private void OnGameEscalated()
+    {
+        agent.speed = _startSpeed + GameManager.Instance.AdditionalCopSpeed;
+        moneyToTake = _startMoney + GameManager.Instance.AdditionalCopMoney;
     }
 }

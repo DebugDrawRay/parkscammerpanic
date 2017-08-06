@@ -25,6 +25,12 @@ public class GameSettings : MonoBehaviour
 
     public static float ValueToMoney = 10.0f;
 
+    //Level Escalation Stuff
+    public static float TimeBetweenLevels = 30.0f;
+    public static int CopNumberIncrement = 1;
+    public static float CopSpeedIncrement = 0.5f;
+    public static int CopMoneyIncrement = 2;
+
     private GameInfo _currentGame;
 
     private void Awake()
