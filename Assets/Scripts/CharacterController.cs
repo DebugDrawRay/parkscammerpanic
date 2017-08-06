@@ -136,7 +136,7 @@ public class CharacterController : MonoBehaviour
     }
     private void UpdateMoney()
     {
-        if (inTransaction)
+        if (inTransaction && GameManager.Instance.Score > 0)
         {
             if (currentTimeToLoss > 0)
             {

@@ -41,7 +41,7 @@ public class TransactionManager : MonoBehaviour
         if (_currentTransaction != null)
         {
             GameManager.Instance.AddToScore(Mathf.Max(0, _currentTransaction.TransactionValue));
-            value = _currentTransaction.TransactionValue;
+            value = Mathf.Max(0, _currentTransaction.TransactionValue);
             _currentTransaction = null;
         }
 

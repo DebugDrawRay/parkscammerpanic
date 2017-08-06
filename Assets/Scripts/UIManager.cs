@@ -24,10 +24,12 @@ public class UIManager : MonoBehaviour
         {
             _optionButtonTexts[i] = Options[i].GetComponentInChildren<Text>();
         }
+        TotalScore.text = "$0.00";
     }
 
     public void UpdateScore(float score)
     {
+        score = Mathf.Clamp(score, 0, Mathf.Infinity);
         TotalScore.text = "$" + (score * GameSettings.ValueToMoney).ToString()+".00";
         UpdateTransactionScore(0, 0);
     }
