@@ -4,7 +4,7 @@ public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance;
 
-    public static float ValueToMoney = 1.0f;
+    public static float ValueToMoney = 10.0f;
 
     private GameInfo _currentGame;
 

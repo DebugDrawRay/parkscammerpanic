@@ -34,8 +34,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTransactionScore(float score, float mod)
     {
-        float money = score * GameSettings.ValueToMoney;
-        CurrentTransactionScore.text = money.ToString() + " (" + mod + ")";
+        CurrentTransactionScore.text = score.ToString() + " (" + mod + ")";
     }
 
     public void UpdateOptions(int[] newWords)
