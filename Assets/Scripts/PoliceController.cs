@@ -22,7 +22,7 @@ public class PoliceController : AiController
         Chase
     }
 
-    public float moneyToTake;
+    public int moneyToTake;
 
     public delegate void Reset();
     public static Reset ResetAll;
