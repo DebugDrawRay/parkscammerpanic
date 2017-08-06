@@ -142,7 +142,7 @@ MonoBehaviour:
   wanderRadius: 5
   timeToWanderRange: {x: 1, y: 4}
   patrolPoints: []
-  moneyToTake: 0
+  moneyToTake: 5
 --- !u!136 &136453741188713230
 CapsuleCollider:
   m_ObjectHideFlags: 1

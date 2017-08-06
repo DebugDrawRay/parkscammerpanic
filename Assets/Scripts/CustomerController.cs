@@ -19,6 +19,9 @@ public class CustomerController : AiController
     private float lastValue;
     private Tween signTween;
 
+    public float itemGetTime;
+    public Ease itemGetEase;
+
     public bool hasItem
     {
         get
@@ -85,9 +88,9 @@ public class CustomerController : AiController
     public void GiveItem(GameObject item)
     {
         currentItem = item;
+        currentItem.transform.SetParent(null);
         currentItem.layer = 0;
-        currentItem.transform.position = itemContainer.position;
-        currentItem.transform.SetParent(itemContainer);
+        currentItem.transform.DOMove(itemContainer.position, itemGetTime).SetEase(itemGetEase).OnComplete(() => { currentItem.transform.position = itemContainer.position; currentItem.transform.SetParent(itemContainer); });
         SpawnManager.Instance.RemovedCustomer();
     }
 

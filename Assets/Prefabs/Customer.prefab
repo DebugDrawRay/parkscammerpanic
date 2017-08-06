@@ -392,6 +392,8 @@ MonoBehaviour:
   signAnimationTime: 0.25
   signVibrato: 10
   signElastic: 1
+  itemGetTime: 1
+  itemGetEase: 25
 --- !u!136 &136883227144171884
 CapsuleCollider:
   m_ObjectHideFlags: 1
