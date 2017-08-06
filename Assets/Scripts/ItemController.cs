@@ -10,5 +10,12 @@ public class ItemController : MonoBehaviour
         _meshFilter = GetComponentInChildren<MeshFilter>();
         int meshIndex = Random.Range(0, ItemMeshes.Length);
         _meshFilter.mesh = ItemMeshes[meshIndex];
+
+        transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+    }
+
+    private void Update()
+    {
+        transform.Rotate(Vector3.up * 50 * Time.deltaTime);
     }
 }
