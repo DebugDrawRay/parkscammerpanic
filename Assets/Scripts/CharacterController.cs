@@ -235,6 +235,7 @@ public class CharacterController : MonoBehaviour
                 currentItem = newItem;
                 currentItem.transform.position = itemContainer.position;
                 currentItem.transform.SetParent(itemContainer);
+                SpawnManager.Instance.RemovedItem();
             }
         }
     }
@@ -264,6 +265,7 @@ public class CharacterController : MonoBehaviour
             if(GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
+                Destroy(hits[0].gameObject);
             }
             else
             {
