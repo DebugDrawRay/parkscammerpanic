@@ -15,13 +15,36 @@ public class PoliceController : AiController
 
 	public enum State
 	{
+        None,
 		Idle,
 		Patrol,
 		Chase
 	}
-	private State currentState;
 
-	private void Start()
+	public float moneyToTake;
+	
+    private State previousState = State.None;
+    private State _currentState;
+    private State currentState
+    {
+        get { return _currentState; }
+        set
+        {
+            previousState = _currentState;
+            _currentState = value;
+        }
+    }
+
+    private void OnEnable()
+    {
+        GameManager.GameStateChanged += OnGameStateChanged;
+    }
+    private void OnDisable()
+    {
+        GameManager.GameStateChanged -= OnGameStateChanged;
+    }
+
+    private void Start()
 	{
 		Initialize();
 	}
@@ -37,12 +60,12 @@ public class PoliceController : AiController
 	{
 		switch(currentState)
 		{
-			case State.Idle:
-			UpdateWander();
-			break;
+			case State.Patrol:
+			    UpdateWander();
+			    break;
 			case State.Chase:
-			ChasePlayer();
-			break;
+			    ChasePlayer();
+			    break;
 		}
 	}
 	private void ChasePlayer()
@@ -50,4 +73,20 @@ public class PoliceController : AiController
 		agent.SetDestination(player.transform.position);
 	}
 
+    private void OnGameStateChanged(GameState gameState)
+    {
+        Debug.Log("Police : State Change");
+        switch (gameState)
+        {
+            case GameState.Paused:
+                currentState = State.Idle;
+                break;
+            case GameState.Playing:
+                currentState = previousState == State.None ? State.Patrol : previousState;
+                break;
+            default:
+                currentState = State.Idle;
+                break;
+        }
+    }
 }

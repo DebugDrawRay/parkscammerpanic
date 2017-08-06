@@ -123,8 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e872c707747fc38489e223f0e4a1f849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 0
-  timeToWanderRange: {x: 0, y: 0}
+  wanderRadius: 5
+  timeToWanderRange: {x: 1, y: 4}
 --- !u!136 &136453741188713230
 CapsuleCollider:
   m_ObjectHideFlags: 1

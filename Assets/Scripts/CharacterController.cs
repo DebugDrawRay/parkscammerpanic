@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController : MonoBehaviour
@@ -26,6 +27,7 @@ public class CharacterController : MonoBehaviour
 
     [Header("Interaction")]
     public float baseInteractionRadius;
+    public float caughtInteractionRadius;
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
     public LayerMask customerMask;
@@ -45,28 +47,49 @@ public class CharacterController : MonoBehaviour
 
     [Header("Yell")]
     public GameObject yellVisual;
+    public float yellTime;
+    public Ease yellEase;
+    public float yellLocationRadius = 1;
 
     private GameObject currentCustomer;
     private bool inTransaction;
 
     public enum State
     {
+        None,
         Idle,
         Active
     }
-    public State currentState;
+    private State _currentState;
+    private State previousState = State.None;
+    public State currentState
+    {
+        get { return _currentState; }
+        set
+        {
+            previousState = _currentState;
+            _currentState = value;
+        }
+    }
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         Instance = this;
 
-        currentState = State.Active;
+        currentState = State.Idle;
         actions = PlayerActions.BindAll();
 
         currentInteractionRadius = baseInteractionRadius;
     }
-
+    private void OnEnable()
+    {
+        GameManager.GameStateChanged += OnGameStateChanged;
+    }
+    private void OnDisable()
+    {
+        GameManager.GameStateChanged -= OnGameStateChanged;
+    }
     private void Update()
     {
         RunStates();
@@ -87,6 +110,7 @@ public class CharacterController : MonoBehaviour
                 AggravatePolice();
                 UpdateInteractionRadius();
                 UpdateHeldItem();
+                CheckForThePolice();
                 break;
         }
     }
@@ -134,8 +158,11 @@ public class CharacterController : MonoBehaviour
                 if (newCustomer != null && !newCustomer.GetComponent<CustomerController>().hasItem)
                 {
                     currentCustomer = newCustomer;
+                    currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Attentive);
+                    
                     transaction.StartTransaction(currentCustomer);
                     inTransaction = true;
+                    currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(true);
                 }
             }
             else
@@ -147,30 +174,33 @@ public class CharacterController : MonoBehaviour
                         currentCustomer.GetComponent<CustomerController>().GiveItem(currentItem);
                         currentItem = null;
                     }
+                    currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Active);
+                    currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
                     inTransaction = false;
                     currentCustomer = null;
                 }
             }
             if (inTransaction)
             {
+                currentCustomer.GetComponent<CustomerController>().UpdateDollarSign(transaction.GetTransactionValue());
                 if (actions.Yell0.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(0);
                 }
                 if (actions.Yell1.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(1);
                 }
                 if (actions.Yell2.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(2);
                 }
                 if (actions.Yell3.WasPressed)
                 {
-                    currentInteractionRadius += yellRadiusIncrease;
+                    Yell(currentCustomer.GetComponent<CustomerController>());
                     transaction.ChooseOption(3);
                 }
             }
@@ -179,7 +209,7 @@ public class CharacterController : MonoBehaviour
     private void UpdateInteractionRadius()
     {
         interactionVisual.transform.localScale = Vector3.one * currentInteractionRadius;
-        if (currentInteractionRadius > baseInteractionRadius)
+        if (currentInteractionRadius > baseInteractionRadius && !inTransaction)
         {
             currentInteractionRadius -= ambientRadiusDecrease;
         }
@@ -225,6 +255,22 @@ public class CharacterController : MonoBehaviour
         }
         return customer;
     }
+    //WOO WOO
+    private void CheckForThePolice()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
+        if (hits.Length > 0)
+        {
+            if(GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
+            {
+                GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
+            }
+            else
+            {
+                GameManager.Instance.GameOver();
+            }
+        }
+    }
 
     private void AggravatePolice()
     {
@@ -233,5 +279,37 @@ public class CharacterController : MonoBehaviour
         {
             hit.GetComponent<PoliceController>().Aggravate();
         }
+    }
+
+    private void OnGameStateChanged(GameState gameState)
+    {
+        Debug.Log("Character : State Change");
+        switch (gameState)
+        {
+            case GameState.Paused:
+                currentState = State.Idle;
+                break;
+            case GameState.Playing:
+                currentState = State.Active;
+                break;
+            default:
+                currentState = State.Idle;
+                break;
+        }
+    }
+
+    private void Yell(CustomerController customer)
+    {
+        currentInteractionRadius += yellRadiusIncrease;
+
+        Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
+        Vector3 from = transform.position + rand;
+        from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
+        GameObject yell = Instantiate(yellVisual, from, Quaternion.identity);
+
+        rand = Random.insideUnitSphere * yellLocationRadius;
+        Vector3 to = customer.transform.position + rand;
+        to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
     }
 }
