@@ -60,6 +60,9 @@ public class CharacterController : MonoBehaviour
     public Ease yellEase;
     public float yellLocationRadius = 1;
 
+    [Header("Cage")]
+    public GameObject cage;
+
     private GameObject currentCustomer;
     private bool inTransaction;
 
@@ -370,12 +373,23 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.GameOver();
+                StartCoroutine(EndGame_Corouting());
             }
             acosted = true;
         }
     }
-
+    IEnumerator EndGame_Corouting()
+    {
+        currentState = State.Idle;
+        PoliceController.Open();
+        GameObject newCage = Instantiate(cage, transform.position + (transform.up * 20), Quaternion.identity);
+        bool cageWait = false;
+        newCage.transform.SetParent(visual);
+        newCage.transform.DOLocalMove(visual.localPosition, .5f).OnComplete(()=> cageWait = true).SetEase(Ease.Linear);
+        yield return new WaitUntil(()=> cageWait == true);
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.GameOver();
+    }
     IEnumerator LoseMoney_Coroutine(PoliceController police)
     {
         currentState = State.Idle;
