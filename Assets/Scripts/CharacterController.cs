@@ -46,6 +46,11 @@ public class CharacterController : MonoBehaviour
     public Transform itemContainer;
     private GameObject currentItem;
 
+    [Header("Transaction")]
+    public float ambientMoneyLoss = 1;
+    public float timeToMoneyLoss = 1;
+    private float currentTimeToLoss;
+
     [Header("Yell")]
     public GameObject yellVisual;
     public float yellTime;
@@ -82,6 +87,7 @@ public class CharacterController : MonoBehaviour
         actions = PlayerActions.BindAll();
 
         currentInteractionRadius = baseInteractionRadius;
+        currentTimeToLoss = timeToMoneyLoss;
     }
     private void OnEnable()
     {
@@ -112,6 +118,7 @@ public class CharacterController : MonoBehaviour
                 UpdateInteractionRadius();
                 UpdateHeldItem();
                 CheckForThePolice();
+                UpdateMoney();
                 break;
         }
     }
@@ -124,6 +131,21 @@ public class CharacterController : MonoBehaviour
             case State.Active:
                 MovementListener();
                 break;
+        }
+    }
+    private void UpdateMoney()
+    {
+        if(inTransaction)
+        {
+            if(currentTimeToLoss > 0)
+            {
+                currentTimeToLoss -= Time.deltaTime;
+            }
+            else
+            {
+                GameManager.Instance.AddToScore(-ambientMoneyLoss);
+                currentTimeToLoss = timeToMoneyLoss;
+            }
         }
     }
     private void MovementListener()
@@ -262,8 +284,7 @@ public class CharacterController : MonoBehaviour
             if(GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
-                SpawnManager.Instance.RemovedPolice();
-                Destroy(hits[0].gameObject);
+                PoliceController.ResetAll();
             }
             else
             {

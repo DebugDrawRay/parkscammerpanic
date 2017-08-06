@@ -518,6 +518,8 @@ MonoBehaviour:
     m_Bits: 2048
   interactionVisual: {fileID: 4019899627974478}
   itemContainer: {fileID: 4568078999735172}
+  ambientMoneyLoss: 1
+  timeToMoneyLoss: 3
   yellVisual: {fileID: 1807610112687950, guid: 2c59b5b23db751144bc003903fb07edf, type: 2}
   yellTime: 1
   yellEase: 25
