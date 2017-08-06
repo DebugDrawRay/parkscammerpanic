@@ -51,6 +51,8 @@ public class CharacterController : MonoBehaviour
     public float ambientMoneyLoss = 1;
     public float timeToMoneyLoss = 1;
     private float currentTimeToLoss;
+    public int maxFailures = 3;
+    private int currentFailures;
 
     [Header("Yell")]
     public GameObject yellVisual;
@@ -69,6 +71,10 @@ public class CharacterController : MonoBehaviour
     }
     private State _currentState;
     private State previousState = State.None;
+
+    public Transform visual;
+    private Sequence walkAnim;
+
     public State currentState
     {
         get { return _currentState; }
@@ -89,6 +95,16 @@ public class CharacterController : MonoBehaviour
 
         currentInteractionRadius = baseInteractionRadius;
         currentTimeToLoss = timeToMoneyLoss;
+
+
+    }
+    private void Start()
+    {
+        walkAnim = DOTween.Sequence();
+        walkAnim.Append(visual.DOLocalMove(visual.transform.localPosition + visual.transform.up / 4, .1f));
+        walkAnim.Append(visual.DOLocalMove(visual.transform.localPosition - visual.transform.up / 4, .1f));
+        walkAnim.SetLoops(-1);
+        walkAnim.Pause();
     }
     private void OnEnable()
     {
@@ -120,6 +136,7 @@ public class CharacterController : MonoBehaviour
                 UpdateHeldItem();
                 CheckForThePolice();
                 UpdateMoney();
+                CheckCustomer();
                 break;
         }
     }
@@ -128,10 +145,23 @@ public class CharacterController : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
+                walkAnim.Pause();
                 break;
             case State.Active:
                 MovementListener();
                 break;
+        }
+    }
+    private void CheckCustomer()
+    {
+        if (inTransaction && currentCustomer != null && currentFailures >= maxFailures)
+        {
+            transaction.CompleteCurrentTransaction();
+            currentCustomer.GetComponent<CustomerController>().GiveItem(new GameObject(), true);
+            currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
+            inTransaction = false;
+            currentCustomer = null;
+            currentFailures = 0;
         }
     }
     private void UpdateMoney()
@@ -156,6 +186,10 @@ public class CharacterController : MonoBehaviour
         move.y = 0;
         if (move == Vector3.zero)
         {
+            if (walkAnim.IsPlaying())
+            {
+                walkAnim.Pause();
+            }
             if (currentSpeed > 0)
             {
                 currentSpeed -= moveAccel;
@@ -164,9 +198,15 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
+            if (!walkAnim.IsPlaying())
+            {
+                walkAnim.Play();
+            }
+
             currentDirection = move;
             currentSpeed += moveAccel;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+            visual.transform.forward = currentDirection.normalized;
         }
         Vector3 movement = currentDirection * currentSpeed;
         rigid.MovePosition(transform.position + (movement * Time.deltaTime));
@@ -205,6 +245,7 @@ public class CharacterController : MonoBehaviour
                     currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
                     inTransaction = false;
                     currentCustomer = null;
+                    currentFailures = 0;
                 }
             }
             if (inTransaction)
@@ -213,18 +254,54 @@ public class CharacterController : MonoBehaviour
                 if (actions.Yell0.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(0));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
                 if (actions.Yell1.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(1));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
                 if (actions.Yell2.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(2));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
                 if (actions.Yell3.WasPressed)
                 {
                     Yell(currentCustomer, transaction.ChooseOption(3));
+                    if (WordDatabase.GetWordValue(transaction.ChooseOption(0)) < 0 && transaction.GetTransactionValue() < 0)
+                    {
+                        currentFailures++;
+                    }
+                    else
+                    {
+                        currentFailures--;
+                        currentFailures = Mathf.RoundToInt(Mathf.Clamp(currentFailures, 0, Mathf.Infinity));
+                    }
                 }
             }
         }
@@ -280,22 +357,37 @@ public class CharacterController : MonoBehaviour
         return customer;
     }
     //WOO WOO
+    private bool acosted = false;
     private void CheckForThePolice()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
-        if (hits.Length > 0)
+        if (hits.Length > 0 && !acosted)
         {
             if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
-                GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
-                LoseMoney(hits[0].gameObject, -hits[0].GetComponent<PoliceController>().moneyToTake);
-                PoliceController.ResetAll();
+                StartCoroutine(LoseMoney_Coroutine(hits[0].GetComponent<PoliceController>()));
+
             }
             else
             {
                 GameManager.Instance.GameOver();
             }
+            acosted = true;
         }
+    }
+
+    IEnumerator LoseMoney_Coroutine(PoliceController police)
+    {
+        currentState = State.Idle;
+        PoliceController.Open();
+        yield return new WaitForSeconds(2f);
+        GameManager.Instance.AddToScore(-police.moneyToTake);
+        LoseMoney(police.gameObject, police.moneyToTake);
+        yield return new WaitForSeconds(2f);
+        PoliceController.ResetAll();
+        yield return new WaitForSeconds(1f);
+        currentState = State.Active;
+        acosted = false;
     }
 
     private void AggravatePolice()
@@ -341,6 +433,7 @@ public class CharacterController : MonoBehaviour
         else
         {
             yell.color = Color.green;
+
         }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
@@ -353,7 +446,7 @@ public class CharacterController : MonoBehaviour
         Vector3 from = customer.transform.position + rand;
         from.y = Mathf.Clamp(from.y, customer.transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
-        yell.text = "$" + (value * GameSettings.ValueToMoney).ToString();
+        yell.text = "+$" + (value * GameSettings.ValueToMoney).ToString();
         if (value > 0)
         {
             yell.color = Color.green;
@@ -375,7 +468,7 @@ public class CharacterController : MonoBehaviour
         Vector3 from = transform.position + rand;
         from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
-        yell.text = "$" + (amount*GameSettings.ValueToMoney).ToString();
+        yell.text = "-$" + (amount * GameSettings.ValueToMoney).ToString();
 
         yell.color = Color.red;
 

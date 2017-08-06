@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public delegate void GameStateChangedHandler(GameState state);
 public enum GameState { Paused, Playing }
@@ -41,7 +40,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SpawnManager.Instance.InitializeLevel();
-        StartGame();
     }
 
     public void AddToScore(float score)

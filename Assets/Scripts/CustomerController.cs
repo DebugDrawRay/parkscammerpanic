@@ -22,6 +22,10 @@ public class CustomerController : AiController
     public float itemGetTime;
     public Ease itemGetEase;
 
+    public float timeToLeave = 15f;
+    public float leaveAnimTime;
+    public Ease leaveEase;
+
     public bool hasItem
     {
         get
@@ -69,7 +73,6 @@ public class CustomerController : AiController
         if (currentState == State.Active)
         {
             UpdateWander();
-            Leave();
         }
     }
 
@@ -78,19 +81,37 @@ public class CustomerController : AiController
         currentState = state;
     }
 
-    public void Leave()
+    public void Leave(bool instant = false)
     {
-        if (hasItem && !Utils.IsVisibleFrom(GetComponentInChildren<Renderer>(), Camera.main))
+        if (hasItem)
         {
-            //Destroy(gameObject);
+            if (instant)
+            {
+                currentState = State.Idle;
+                Destroy(agent);
+                Destroy(GetComponent<Rigidbody>());
+                transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase).OnComplete(() => Destroy(gameObject));
+            }
+            else
+            {
+                StartCoroutine(Leave_Coroutine());
+            }
         }
     }
-    public void GiveItem(GameObject item)
+    IEnumerator Leave_Coroutine()
+    {
+        yield return new WaitForSeconds(timeToLeave);
+        currentState = State.Idle;
+        Destroy(agent);
+        Destroy(GetComponent<Rigidbody>());
+        transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase).OnComplete(() => Destroy(gameObject));
+    }
+    public void GiveItem(GameObject item, bool instant = false)
     {
         currentItem = item;
         currentItem.transform.SetParent(null);
         currentItem.layer = 0;
-        currentItem.transform.DOMove(itemContainer.position, itemGetTime).SetEase(itemGetEase).OnComplete(() => { currentItem.transform.position = itemContainer.position; currentItem.transform.SetParent(itemContainer); });
+        currentItem.transform.DOMove(itemContainer.position, itemGetTime).SetEase(itemGetEase).OnComplete(() => { currentItem.transform.position = itemContainer.position; currentItem.transform.SetParent(itemContainer); Leave(instant); });
         SpawnManager.Instance.RemovedCustomer();
     }
 
@@ -122,7 +143,7 @@ public class CustomerController : AiController
             signTween = dollarSign.transform.DOPunchPosition(transform.up, signAnimationTime, signVibrato, signElastic);
             lastValue = value;
         }
-        float scale = value / 10;
+        float scale = value / 5;
         Color baseCol = neutralColor;
         Color targetCol = positiveColor;
         if (scale > 0)

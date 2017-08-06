@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject OptionsPanel;
     public GameObject GameOverPanel;
+    public GameObject StartScreenPanel;
     public GameObject[] Options;
     public Text CurrentTransactionScore;
     public Text TotalScore;
@@ -57,6 +58,12 @@ public class UIManager : MonoBehaviour
     {
         _hidden = true;
         OptionsPanel.SetActive(false);
+    }
+
+    public void HideStartScreen()
+    {
+        GameManager.Instance.StartGame();
+        StartScreenPanel.SetActive(false);
     }
 
     public void ShowGameOverPanel()

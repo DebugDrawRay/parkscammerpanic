@@ -5,7 +5,11 @@ public class TransactionManager : MonoBehaviour
 {
     public static TransactionManager Instance;
 
-    private Transaction _currentTransaction;
+    public Transaction _currentTransaction
+    {
+        get;
+        private set;
+    }
 
     private void Awake()
     {
