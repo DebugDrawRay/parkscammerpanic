@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private float _score = 0;
-    public float Score
+    private int _score = 0;
+    public int Score
     {
         get
         {
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         SpawnManager.Instance.InitializeLevel();
     }
 
-    public void AddToScore(float score)
+    public void AddToScore(int score)
     {
         _score += score;
         UIManager.Instance.UpdateScore(_score);
@@ -56,6 +56,12 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         CurrentState = GameState.Paused;
-        UIManager.Instance.ShowGameOverPanel();
+
+        if (Score > GameSettings.HighScore)
+        {
+            GameSettings.HighScore = Score;
+        }
+
+        UIManager.Instance.ShowGameOverPanel(Score, GameSettings.HighScore);
     }
 }
