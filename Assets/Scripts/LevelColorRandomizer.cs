@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelColorRandomizer : MonoBehaviour
 {
@@ -8,7 +9,17 @@ public class LevelColorRandomizer : MonoBehaviour
     public Color[] WindowsDoorsColors;
     public Color[] BillboardColors;
 
-    private void Awake()
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+    }
+
+    private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         MeshRenderer[] meshRenderers = (MeshRenderer[])FindObjectsOfType<MeshRenderer>();
         for (int i = 0; i < meshRenderers.Length; i++)
