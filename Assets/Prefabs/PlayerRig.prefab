@@ -630,6 +630,7 @@ MonoBehaviour:
   yellTime: 1
   yellEase: 25
   yellLocationRadius: 1
+  cage: {fileID: 1952657688166024, guid: 5160fb2feaa766c4c89b37f8f20703be, type: 2}
   visual: {fileID: 4618399229958992}
 --- !u!114 &114789815129302724
 MonoBehaviour:

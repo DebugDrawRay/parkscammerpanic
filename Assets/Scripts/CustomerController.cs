@@ -26,6 +26,7 @@ public class CustomerController : AiController
     public float leaveAnimTime;
     public Ease leaveEase;
 
+    public Renderer visual;
     public bool hasItem
     {
         get
@@ -66,6 +67,14 @@ public class CustomerController : AiController
     private void Start()
     {
         Initialize();
+        float hue = 0;
+        float sat = 0;
+        float val = 0;
+        Color.RGBToHSV(visual.material.color, out hue, out sat, out val);
+        float fuck, you;
+        Color.RGBToHSV(Random.ColorHSV(), out hue, out fuck, out you);
+        Color newColor = Color.HSVToRGB(hue, .5f, .5f);
+        visual.materials[0].SetColor("_Color", newColor);
     }
 
     private void Update()
