@@ -438,7 +438,9 @@ GameObject:
   - component: {fileID: 4611332872887548}
   - component: {fileID: 33248338365341520}
   - component: {fileID: 23921907619258030}
-  m_Layer: 0
+  - component: {fileID: 65941006206922906}
+  - component: {fileID: 114628212570688012}
+  m_Layer: 12
   m_Name: Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2946,7 +2948,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1415680400309132}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -48.9, y: 0, z: 28.7}
+  m_LocalPosition: {x: -53.95, y: 0, z: 28.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4863507655270896}
@@ -9647,6 +9649,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 51.76331, y: 9.488136, z: 12.0202}
   m_Center: {x: -14.910633, y: 3.1677818, z: 71.68988}
+--- !u!65 &65941006206922906
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1164431888611040}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.2342188, y: 3.2342188, z: 6.082122}
+  m_Center: {x: -0.031399734, y: 0.041046154, z: 2.8357139}
 --- !u!114 &114053463360244740
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9787,6 +9801,21 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &114628212570688012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1164431888611040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!114 &114647704568785390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9814,7 +9843,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 39c6592fe535ae344bfebd60af5c9eac, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 2170fc756811a58458e64a8a03ea3524, type: 2}
 --- !u!114 &114900663043317692
 MonoBehaviour:
   m_ObjectHideFlags: 1
