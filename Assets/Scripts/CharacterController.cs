@@ -28,6 +28,7 @@ public class CharacterController : MonoBehaviour
 
     [Header("Interaction")]
     public float baseInteractionRadius;
+    public float itemInteractionRadius;
     public float caughtInteractionRadius;
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
@@ -237,9 +238,9 @@ public class CharacterController : MonoBehaviour
     {
         if (currentItem == null)
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, baseInteractionRadius, itemMask);
+            Collider[] hits = Physics.OverlapSphere(transform.position, itemInteractionRadius, itemMask);
             GameObject newItem = null;
-            float currentDistance = baseInteractionRadius;
+            float currentDistance = itemInteractionRadius;
             foreach (Collider hit in hits)
             {
                 float dist = Vector3.Distance(transform.position, hit.transform.position);
