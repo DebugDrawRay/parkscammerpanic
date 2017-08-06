@@ -31,7 +31,9 @@ public class PoliceController : AiController
     public SkinnedMeshRenderer render;
     public float leaveAnimTime;
     public Ease leaveEase;
-    
+
+    public GameObject chaseLight;
+
     private State previousState = State.None;
     private State _currentState;
     private State currentState
@@ -72,6 +74,7 @@ public class PoliceController : AiController
     private void Awake()
     {
         patrolPoints = SpawnManager.Instance.GetPolicePatrolPoints();
+        chaseLight.SetActive(false);
     }
 
     private void Start()
@@ -84,7 +87,14 @@ public class PoliceController : AiController
     public void Aggravate()
     {
         currentState = State.Chase;
-        DOTween.To(()=> currentLight, x=> currentLight = x, 100, .5f);
+        if (!chaseLight.activeSelf)
+        {
+            chaseLight.SetActive(true);
+            chaseLight.GetComponent<Animation>().Play();
+            DOTween.To(() => currentLight, x => currentLight = x, 100, .5f);
+
+        }
+
     }
 
     private float currentLight = 0;
@@ -117,7 +127,7 @@ public class PoliceController : AiController
     private void OpenDrawer()
     {
         currentState = State.Idle;
-        DOTween.To(()=> currentDrawer, x=> currentDrawer = x, 100, .5f);
+        DOTween.To(() => currentDrawer, x => currentDrawer = x, 100, .5f);
     }
 
     public void ResetPolice()

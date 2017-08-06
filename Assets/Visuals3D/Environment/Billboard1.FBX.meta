@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 77f7f9af8e7abf047a82ba6340c6b24f
-timeCreated: 1502056128
+guid: 56c1c78caeaf6dd4e83e036db5788725
+timeCreated: 1502058752
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
@@ -9,9 +9,9 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Banana
+    4300000: BillboardA
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
@@ -37,7 +37,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 2
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
