@@ -524,9 +524,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAccel: 0.5
   maxSpeed: 10
-  baseInteractionRadius: 7.5
+  baseInteractionRadius: 5
   itemInteractionRadius: 1
-  caughtInteractionRadius: 1
+  caughtInteractionRadius: 2
   yellRadiusIncrease: 1.5
   ambientRadiusDecrease: 0.1
   customerMask:
@@ -542,6 +542,7 @@ MonoBehaviour:
   itemContainer: {fileID: 4568078999735172}
   ambientMoneyLoss: 1
   timeToMoneyLoss: 3
+  maxFailures: 3
   yellVisual: {fileID: 1807610112687950, guid: 2c59b5b23db751144bc003903fb07edf, type: 2}
   yellTime: 1
   yellEase: 25

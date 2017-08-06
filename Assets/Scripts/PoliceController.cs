@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 public class PoliceController : AiController
 {
@@ -25,7 +26,12 @@ public class PoliceController : AiController
 
     public delegate void Reset();
     public static Reset ResetAll;
+    public static Reset Open;
 
+    public SkinnedMeshRenderer render;
+    public float leaveAnimTime;
+    public Ease leaveEase;
+    
     private State previousState = State.None;
     private State _currentState;
     private State currentState
@@ -42,15 +48,18 @@ public class PoliceController : AiController
     {
         GameManager.GameStateChanged += OnGameStateChanged;
         ResetAll += ResetPolice;
+        Open += OpenDrawer;
     }
     private void OnDisable()
     {
         GameManager.GameStateChanged -= OnGameStateChanged;
         ResetAll -= ResetPolice;
+        Open -= OpenDrawer;
     }
     private void OnDestroy()
     {
         ResetAll -= ResetPolice;
+        Open -= OpenDrawer;
     }
     private void Awake()
     {
@@ -63,9 +72,14 @@ public class PoliceController : AiController
     public void Aggravate()
     {
         currentState = State.Chase;
+        DOTween.To(()=> currentLight, x=> currentLight = x, 100, .5f);
     }
+    private float currentLight = 0;
+    private float currentDrawer = 0;
     private void Update()
     {
+        render.SetBlendShapeWeight(0, currentLight);
+        render.SetBlendShapeWeight(1, currentDrawer);
         RunStates();
     }
     private void RunStates()
@@ -84,10 +98,15 @@ public class PoliceController : AiController
     {
         agent.SetDestination(player.transform.position);
     }
+    private void OpenDrawer()
+    {
+        currentState = State.Idle;
+        DOTween.To(()=> currentDrawer, x=> currentDrawer = x, 100, .5f);
+    }
     public void ResetPolice()
     {
         SpawnManager.Instance.RemovedPolice();
-        Destroy(gameObject);
+        transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase).OnComplete(() => Destroy(gameObject));
     }
     private void OnGameStateChanged(GameState gameState)
     {
