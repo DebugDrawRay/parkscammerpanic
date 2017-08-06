@@ -71,6 +71,10 @@ public class CharacterController : MonoBehaviour
     }
     private State _currentState;
     private State previousState = State.None;
+
+    public Transform visual;
+    private Sequence walkAnim;
+
     public State currentState
     {
         get { return _currentState; }
@@ -91,6 +95,16 @@ public class CharacterController : MonoBehaviour
 
         currentInteractionRadius = baseInteractionRadius;
         currentTimeToLoss = timeToMoneyLoss;
+
+
+    }
+    private void Start()
+    {
+        walkAnim = DOTween.Sequence();
+        walkAnim.Append(visual.DOLocalMove(visual.transform.localPosition + visual.transform.up / 4, .1f));
+        walkAnim.Append(visual.DOLocalMove(visual.transform.localPosition - visual.transform.up / 4, .1f));
+        walkAnim.SetLoops(-1);
+        walkAnim.Pause();
     }
     private void OnEnable()
     {
@@ -131,6 +145,7 @@ public class CharacterController : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
+                walkAnim.Pause();
                 break;
             case State.Active:
                 MovementListener();
@@ -171,6 +186,10 @@ public class CharacterController : MonoBehaviour
         move.y = 0;
         if (move == Vector3.zero)
         {
+            if (walkAnim.IsPlaying())
+            {
+                walkAnim.Pause();
+            }
             if (currentSpeed > 0)
             {
                 currentSpeed -= moveAccel;
@@ -179,6 +198,11 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
+            if (!walkAnim.IsPlaying())
+            {
+                walkAnim.Play();
+            }
+
             currentDirection = move;
             currentSpeed += moveAccel;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
@@ -360,7 +384,7 @@ public class CharacterController : MonoBehaviour
         LoseMoney(police.gameObject, police.moneyToTake);
         yield return new WaitForSeconds(2f);
         PoliceController.ResetAll();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         currentState = State.Active;
         acosted = false;
     }
