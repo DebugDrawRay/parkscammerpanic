@@ -34,7 +34,7 @@ public class TransactionManager : MonoBehaviour
         _currentTransaction = new Transaction(customer);
     }
 
-    public bool CompleteCurrentTransaction()
+    public float CompleteCurrentTransaction()
     {
         Debug.Log("Ending Transaction");
         float value = 0;
@@ -46,7 +46,7 @@ public class TransactionManager : MonoBehaviour
         }
 
         UIManager.Instance.HideOptions();
-        return value > 0;
+        return value;
     }
 
     public int ChooseOption(int option)

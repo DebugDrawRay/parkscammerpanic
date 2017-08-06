@@ -136,9 +136,9 @@ public class CharacterController : MonoBehaviour
     }
     private void UpdateMoney()
     {
-        if(inTransaction)
+        if (inTransaction)
         {
-            if(currentTimeToLoss > 0)
+            if (currentTimeToLoss > 0)
             {
                 currentTimeToLoss -= Time.deltaTime;
             }
@@ -183,7 +183,7 @@ public class CharacterController : MonoBehaviour
                 {
                     currentCustomer = newCustomer;
                     currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Attentive);
-                    
+
                     transaction.StartTransaction(currentCustomer);
                     inTransaction = true;
                     currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(true);
@@ -193,11 +193,14 @@ public class CharacterController : MonoBehaviour
             {
                 if (currentCustomer != null && Vector3.Distance(transform.position, currentCustomer.transform.position) >= baseInteractionRadius)
                 {
-                    if (transaction.CompleteCurrentTransaction())
+                    float transVal = transaction.CompleteCurrentTransaction();
+                    if (transVal > 0)
                     {
                         currentCustomer.GetComponent<CustomerController>().GiveItem(currentItem);
                         currentItem = null;
                     }
+                    RecieveMoney(currentCustomer.GetComponent<CustomerController>(), transVal);
+
                     currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Active);
                     currentCustomer.GetComponent<CustomerController>().dollarSign.gameObject.SetActive(false);
                     inTransaction = false;
@@ -282,7 +285,7 @@ public class CharacterController : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
         if (hits.Length > 0)
         {
-            if(GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
+            if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 GameManager.Instance.AddToScore(-hits[0].GetComponent<PoliceController>().moneyToTake);
                 PoliceController.ResetAll();
@@ -330,7 +333,7 @@ public class CharacterController : MonoBehaviour
         from.y = Mathf.Clamp(from.y, transform.position.y, Mathf.Infinity);
         TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
         yell.text = WordDatabase.GetWordText(word);
-        if(WordDatabase.GetWordValue(word) < 0)
+        if (WordDatabase.GetWordValue(word) < 0)
         {
             yell.color = Color.red;
         }
@@ -340,6 +343,26 @@ public class CharacterController : MonoBehaviour
         }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+    }
+
+    private void RecieveMoney(CustomerController customer, float value)
+    {
+        Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
+        Vector3 from = customer.transform.position + rand;
+        from.y = Mathf.Clamp(from.y, customer.transform.position.y, Mathf.Infinity);
+        TextMeshPro yell = Instantiate(yellVisual, from, Quaternion.identity).GetComponentInChildren<TextMeshPro>();
+        yell.text = "$" + value.ToString();
+        if (value > 0)
+        {
+            yell.color = Color.green;
+        }
+        else
+        {
+            yell.color = Color.red;
+        }
+        Vector3 to = transform.position + rand;
+        to.y = Mathf.Clamp(to.y, transform.position.y, Mathf.Infinity);
         yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
     }
 }
