@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SpawnManager.Instance.InitializeLevel();
-        StartGame();
     }
 
     public void AddToScore(float score)
