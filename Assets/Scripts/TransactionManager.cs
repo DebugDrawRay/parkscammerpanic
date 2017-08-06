@@ -49,12 +49,14 @@ public class TransactionManager : MonoBehaviour
         return value > 0;
     }
 
-    public void ChooseOption(int option)
+    public int ChooseOption(int option)
     {
+        int word = -1;
         if (_currentTransaction != null)
         {
-            _currentTransaction.ChooseOption(option);
+            word = _currentTransaction.ChooseOption(option);
         }
+        return word;
     }
 }
 
@@ -80,13 +82,16 @@ public class Transaction
         UpdateWords();
     }
 
-    public void ChooseOption(int option)
+    public int ChooseOption(int option)
     {
         float value = WordDatabase.GetWordValue(_currentWords[option]);
+        int id = _currentWords[option];
         _transactionValue += value;    
         UIManager.Instance.UpdateTransactionScore(_transactionValue, value);
 
         UpdateWords();
+        return id;
+
     }
 
     private void UpdateWords()
