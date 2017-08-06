@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public delegate void GameStateChangedHandler(GameState state);
 public enum GameState { Paused, Playing }

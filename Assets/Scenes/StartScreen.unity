@@ -721,6 +721,7 @@ GameObject:
   - component: {fileID: 676136053}
   - component: {fileID: 676136052}
   - component: {fileID: 676136051}
+  - component: {fileID: 676136050}
   m_Layer: 0
   m_Name: PersistentScripts
   m_TagString: Untagged
@@ -728,6 +729,34 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &676136050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676136049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f0d72c4cb3b274682c9c3ef1876aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WindowsDoorsMaterial: {fileID: 2100000, guid: 5b6a707747de64d41852eb834a9d0ea5,
+    type: 2}
+  BillboardsMaterial: {fileID: 2100000, guid: 72e99b2059e7d6e45ad71e6e05d31205, type: 2}
+  WindowsDoorsColors:
+  - {r: 0.2, g: 0, b: 1, a: 1}
+  - {r: 0.7372549, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0.95686275, a: 1}
+  - {r: 0.78039217, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.101960786, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.7647059, a: 1}
+  - {r: 0.2, g: 1, b: 0, a: 1}
+  BillboardColors:
+  - {r: 0.050980393, g: 0.09019608, b: 0.85882354, a: 1}
+  - {r: 0.13333334, g: 0.24313726, b: 0.16078432, a: 1}
+  - {r: 0.28235295, g: 0.14901961, b: 0.3529412, a: 1}
+  - {r: 0.3882353, g: 0.09411765, b: 0.18431373, a: 1}
+  - {r: 0.3019608, g: 0.13333334, b: 0.13333334, a: 1}
 --- !u!114 &676136051
 MonoBehaviour:
   m_ObjectHideFlags: 0
