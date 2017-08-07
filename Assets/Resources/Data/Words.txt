@@ -1,81 +1,81 @@
-Fantastic, 2
-Fabulous, 2
-Wonderful, 2
-Amazing, 2
-Incredible, 2
-Cyber, 2
-Incomparable, 2
-Spectacular, 2
-Perfect, 2
-Awesome, 2
-Beautiful, 2
-Adorable, 2
-Unparalleled, 2
-Peerless, 2
-Approved, 2
-Official, 2
-Professional, 2
-Premiere, 2
-Luxurious, 2
-Five-Star, 2
-Shiny, 1
-Nice, 1
-Good, 1
-Okay, 1
-Sweet, 1
-Alright, 1
-Cool, 1
-Groovy, 1
-Cyberish, 1
-Working, 1
-Swell, 1
-Jolly, 1
-Super, 1
-Cozy, 1
-Pretty, 1
-Talented, 1
-Comfortable, 1
-Cute, 1
-Juicy, 1
-Smooth, 1
-Ruined, -1
-Broken, -1
-Ugly, -1
-Gross, -1
-Disgusting, -1
-Rancid, -1
-Asinine, -1
-Incomplete, -1
-Rotting, -1
-Distasteful, -1
-Unlikable, -1
-Dirty, -1
-Troubling, -1
-Unsafe, -1
-Harmful, -1
-Slimy, -1
-Soggy, -1
-Sticky, -1
-Painful, -1
-Unhelpful, -1
-NOT CYBER, -2
-Garbage, -2
-Unloved, -2
-Stupid, -2
-Harrowing, -2
-Unsightly, -2
-Horrible, -2
-Dreadful, -2
-Awful, -2
-Boring, -2
-Repulsive, -2
-Putrid, -2
-Contrived, -2
-Hated, -2
-Creepy, -2
-Dangerous, -2
-Lethal, -2
-Decrepit, -2
+Fantastic, 2, Fantastic.wav
+Fabulous, 2, Fabulous.wav
+Wonderful, 2, Wonderful.wav
+Amazing, 2, Amazing.wav
+Incredible, 2, Incredible.wav
+Cyber, 2, Cyber.wav
+Incomparable, 2, Incomparable.wav
+Spectacular, 2, Spectacular.wav
+Perfect, 2 
+Awesome, 2, Awesome.wav
+Beautiful, 2, Beautiful.wav
+Adorable, 2, Adorable.wav
+Unparalleled, 2, Unparalleled.wav
+Peerless, 2, Peerless.wav
+Approved, 2, Approved.wav
+Official, 2, Official.wav
+Professional, 2, Professional.wav
+Premiere, 2, Premiere.wav
+Luxurious, 2, Luxurious.wav
+Five-Star, 2, Five_Star.wav
+Shiny, 1, Shiny.wav
+Nice, 1, Nice.wav
+Good, 1, Good.wav
+Okay, 1, Okay.wav
+Sweet, 1, Sweet.wav
+Alright, 1, Alright.wav
+Cool, 1, Cool.wav
+Groovy, 1, Groovy.wav
+Cyberish, 1, Cyberish.wav
+Working, 1, Working.wav
+Swell, 1, Swell.wav
+Jolly, 1, Jolly.wav
+Super, 1, Super.wav
+Cozy, 1, Cozy.wav
+Pretty, 1, Pretty.wav
+Talented, 1, Talented.wav
+Comfortable, 1, Comfortable.wav
+Cute, 1, Cute.wav
+Juicy, 1, Juicy.wav
+Smooth, 1, Smooth.wav
+Ruined, -1, Ruined.wav
+Broken, -1, Broken.wav
+Ugly, -1, Ugly.wav
+Gross, -1, Gross.wav
+Disgusting, -1, Disgusting.wav
+Rancid, -1, Rancid.wav
+Asinine, -1, Asinine.wav
+Incomplete, -1, Incomplete.wav
+Rotting, -1, Rotting.wav
+Distasteful, -1, Distasteful.wav
+Unlikable, -1, Unlikeable.wav
+Dirty, -1, Dirty.wav
+Troubling, -1, Troubling.wav
+Unsafe, -1, Unsave.wav
+Harmful, -1, Harmful.wav
+Slimy, -1, Slimy.wav
+Soggy, -1, Soggy.wav
+Sticky, -1, Sticky.wav
+Painful, -1, Painful.wav
+Unhelpful, -1, Unhelpful.wav
+NOT CYBER, -2, NOT_CYBER.wav
+Garbage, -2, Garbage.wav
+Unloved, -2, Unloved.wav
+Stupid, -2, Stupid.wav
+Harrowing, -2, Harrowing.wav
+Unsightly, -2, Unsightly.wav
+Horrible, -2, Horrible.wav
+Dreadful, -2, Dreadful.wav
+Awful, -2, Awful.wav
+Boring, -2, Boring.wav
+Repulsive, -2, Repulsive.wav
+Putrid, -2, Putrid.wav
+Contrived, -2, Contrived.wav
+Hated, -2, Hated.wav
+Creepy, -2, Creepy.wav
+Dangerous, -2, Dangerous.wav
+Lethal, -2, Lethal.wav
+Decrepit, -2, Decrepit.wav
 Incomplete, -2
-Unusable, -2
-Diseased, -2
+Unusable, -2, Unusable.wav
+Diseased, -2, Diseased.wav
