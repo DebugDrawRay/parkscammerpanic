@@ -63,6 +63,13 @@ public class CharacterController : MonoBehaviour
     [Header("Cage")]
     public GameObject cage;
 
+    [Header("Sounds")]
+    public AudioClip alert;
+    public AudioClip damage;
+    public AudioClip pickup;
+    public AudioClip loss;
+    public AudioClip profit;
+
     private GameObject currentCustomer;
     private bool inTransaction;
 
@@ -131,7 +138,7 @@ public class CharacterController : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
-                if(actions.Submit.WasPressed)
+                if (actions.Submit.WasPressed)
                 {
                     UIManager.Instance.HideStartScreen();
                 }
@@ -343,6 +350,7 @@ public class CharacterController : MonoBehaviour
                 currentItem.transform.position = itemContainer.position;
                 currentItem.transform.SetParent(itemContainer);
                 SpawnManager.Instance.RemovedItem();
+                AudioController.Instance.Play(pickup);
             }
         }
     }
@@ -373,7 +381,6 @@ public class CharacterController : MonoBehaviour
             if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 StartCoroutine(LoseMoney_Coroutine(hits[0].GetComponent<PoliceController>()));
-
             }
             else
             {
@@ -389,8 +396,9 @@ public class CharacterController : MonoBehaviour
         GameObject newCage = Instantiate(cage, transform.position + (transform.up * 20), Quaternion.identity);
         bool cageWait = false;
         newCage.transform.SetParent(visual);
-        newCage.transform.DOLocalMove(visual.localPosition, .5f).OnComplete(()=> cageWait = true).SetEase(Ease.Linear);
-        yield return new WaitUntil(()=> cageWait == true);
+        newCage.transform.DOLocalMove(visual.localPosition, .5f).OnComplete(() => cageWait = true).SetEase(Ease.Linear);
+        yield return new WaitUntil(() => cageWait == true);
+        AudioController.Instance.Play(damage);
         yield return new WaitForSeconds(1f);
         GameManager.Instance.GameOver();
     }
@@ -413,7 +421,11 @@ public class CharacterController : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, currentInteractionRadius, policeMask);
         foreach (Collider hit in hits)
         {
-            hit.GetComponent<PoliceController>().Aggravate();
+            if (hit.GetComponent<PoliceController>()._currentState != PoliceController.State.Chase)
+            {
+                hit.GetComponent<PoliceController>().Aggravate();
+                AudioController.Instance.Play(alert);
+            }
         }
     }
 
@@ -467,10 +479,14 @@ public class CharacterController : MonoBehaviour
         if (value > 0)
         {
             yell.color = Color.green;
+            AudioController.Instance.Play(profit);
+
         }
         else
         {
             yell.color = Color.red;
+            AudioController.Instance.Play(loss);
+
         }
         Vector3 to = transform.position + rand;
         to.y = Mathf.Clamp(to.y, transform.position.y, Mathf.Infinity);
@@ -479,6 +495,7 @@ public class CharacterController : MonoBehaviour
 
     private void LoseMoney(GameObject customer, float amount)
     {
+        AudioController.Instance.Play(loss);
         currentInteractionRadius += yellRadiusIncrease;
 
         Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
