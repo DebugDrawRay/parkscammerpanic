@@ -77,6 +77,11 @@ public class StartSceneController : MonoBehaviour
         LevelDisplayImage.sprite = LevelSelections[_selectedLevel].LevelImage;
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     [System.Serializable]
     public class LevelSelection
     {
