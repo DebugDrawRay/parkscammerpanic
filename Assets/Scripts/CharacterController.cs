@@ -255,7 +255,10 @@ public class CharacterController : MonoBehaviour
                 GameObject newCustomer = GetClosestCustomer();
                 if (newCustomer != null && !newCustomer.GetComponent<CustomerController>().hasItem)
                 {
-                    if (_innocent) { _innocent = false; }
+                    if (_innocent)
+                    {
+                        _innocent = false;
+                    }
 
                     currentCustomer = newCustomer;
                     currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Attentive);
@@ -398,7 +401,7 @@ public class CharacterController : MonoBehaviour
     private void CheckForThePolice()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, caughtInteractionRadius, policeMask);
-        if (hits.Length > 0 && !acosted)
+        if (hits.Length > 0 && !acosted && !_innocent)
         {
             if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
