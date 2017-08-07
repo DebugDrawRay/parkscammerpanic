@@ -952,11 +952,6 @@ Prefab:
       propertyPath: m_FirstSelected
       value: 
       objectReference: {fileID: 1155031832}
-    - target: {fileID: 114889996320311980, guid: 39b0888b55f42854a80f94dd9e5ff160,
-        type: 2}
-      propertyPath: allowMouseInput
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 39b0888b55f42854a80f94dd9e5ff160, type: 2}
   m_IsPrefabParent: 0
