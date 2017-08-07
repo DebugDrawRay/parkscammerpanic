@@ -62,7 +62,7 @@ Material:
     - _DstBlend: 0
     - _FadeCutoff: 4.8
     - _FadeHeight: 0
-    - _Gloss: 0.8
+    - _Gloss: 0.35
     - _GlossMapScale: 1
     - _Glossiness: 0.105
     - _GlossyReflections: 1
