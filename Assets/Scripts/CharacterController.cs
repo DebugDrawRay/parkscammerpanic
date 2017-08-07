@@ -444,6 +444,7 @@ public class CharacterController : MonoBehaviour
         {
             if (_escaping)
             {
+                UIManager.Instance.HideEscapeText();
                 _escaping = false;
             }
         }
