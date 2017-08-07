@@ -59,7 +59,16 @@ public static class WordDatabase
             w.Id = i;
             w.Text = rawWord[0].Trim();
             w.Value = Convert.ToInt32(rawWord[1].Trim());
-            w.AudioClip = Resources.Load("/WordSounds/" + rawWord[2].Trim()) as AudioClip;            
+
+            AudioClip clip = Resources.Load("WordSounds/" + rawWord[2].Trim()) as AudioClip;
+            if (clip != null)
+            {
+                w.AudioClip = clip;
+            }
+            else
+            {
+                Debug.Log("AUDIO FLILE MISSING " + rawWord[2].Trim());
+            }
 
             _words[i] = w;
 

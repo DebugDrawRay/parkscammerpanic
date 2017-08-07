@@ -5,7 +5,10 @@ using UnityEngine;
 public class AudioController : MonoBehaviour 
 {
 	public static AudioController Instance;
-	public AudioSource source;
+
+    public AudioSource[] AudioSources;
+
+    private int index = 0;
 
 	private void Awake()
 	{
@@ -13,7 +16,8 @@ public class AudioController : MonoBehaviour
 	}
 	public void Play(AudioClip sound)
 	{
-		source.clip = sound;
-		source.Play();
-	}
+        AudioSources[index].clip = sound;
+        AudioSources[index].Play();
+        index = index < AudioSources.Length - 1 ? index + 1 : 0;
+    }
 }

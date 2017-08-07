@@ -21,6 +21,11 @@ public class StartSceneController : MonoBehaviour
     private int _offscreen = 2000;
     private float _scrollSpeed = 0.4f;
 
+    private void Awake()
+    {
+        WordDatabase.Initialize();
+    }
+
     private void Start()
     {
         UpdateLevelDisplay();
