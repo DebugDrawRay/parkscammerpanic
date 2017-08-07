@@ -60,9 +60,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelBrightness: 3.09
+    - _FresnelBrightness: 5
     - _FresnelClamp: 0.38
-    - _FresnelExponent: 1
+    - _FresnelExponent: 0.85
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -76,6 +76,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.21264057, g: 0.4463779, b: 0.50735295, a: 1}
-    - _Diffuse: {r: 0.25091913, g: 0.25690922, b: 0.375, a: 1}
+    - _Color: {r: 0, g: 0.7931032, b: 1, a: 1}
+    - _Diffuse: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
