@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     [Header("Game Over Panel")]
     public Text HighScoreDisplay;
 
+    [Header("Escaping")]
+    public Text EscapeText;
+
     private bool _hidden = true;
     private Text[] _optionButtonTexts;
 
@@ -88,5 +91,18 @@ public class UIManager : MonoBehaviour
     public void OnReturnToMainMenuClick()
     {
         SceneManager.LoadScene("StartScreen");
+    }
+
+    public void UpdateEscapeText(string text)
+    {
+        if (!EscapeText.gameObject.activeInHierarchy)
+            EscapeText.gameObject.SetActive(true);
+
+        EscapeText.text = text;
+    }
+
+    public void HideEscapeText()
+    {
+        EscapeText.gameObject.SetActive(false);
     }
 }

@@ -92,6 +92,16 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.Playing;
     }
 
+    public void PauseGame()
+    {
+        CurrentState = GameState.Paused;
+    }
+
+    public void UnPauseGame()
+    {
+        CurrentState = GameState.Playing;
+    }
+
     public void GameOver()
     {
         CurrentState = GameState.Paused;

@@ -202,7 +202,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1668396575690806}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 4969855762155812}
@@ -610,6 +610,7 @@ MonoBehaviour:
   baseInteractionRadius: 5
   itemInteractionRadius: 1
   caughtInteractionRadius: 1.5
+  escapeInteractionRadius: 0
   yellRadiusIncrease: 1.5
   ambientRadiusDecrease: 0.1
   customerMask:
@@ -621,6 +622,9 @@ MonoBehaviour:
   itemMask:
     serializedVersion: 2
     m_Bits: 2048
+  escapeMask:
+    serializedVersion: 2
+    m_Bits: 0
   interactionVisual: {fileID: 4969855762155812}
   itemContainer: {fileID: 4568078999735172}
   ambientMoneyLoss: 1
@@ -631,6 +635,13 @@ MonoBehaviour:
   yellEase: 25
   yellLocationRadius: 1
   cage: {fileID: 1952657688166024, guid: 5160fb2feaa766c4c89b37f8f20703be, type: 2}
+  alert: {fileID: 8300000, guid: cf7ec5b1e8d31d742a5a119ce697eb74, type: 3}
+  damage: {fileID: 8300000, guid: 406efd2b0c05b204086edc6c2dca198c, type: 3}
+  pickup: {fileID: 8300000, guid: 573b16844f4ed81469f6907b72e963eb, type: 3}
+  loss: {fileID: 8300000, guid: b655b9a5e9f2cd749859cacc0b740954, type: 3}
+  profit: {fileID: 8300000, guid: 2992bf01ca97abd48865fdfdc01428e0, type: 3}
+  leaveAnimTime: 2
+  leaveEase: 18
   visual: {fileID: 4618399229958992}
 --- !u!114 &114789815129302724
 MonoBehaviour:

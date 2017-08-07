@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
@@ -30,11 +29,15 @@ public class CharacterController : MonoBehaviour
     public float baseInteractionRadius;
     public float itemInteractionRadius;
     public float caughtInteractionRadius;
+    public float escapeInteractionRadius;
+
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
+
     public LayerMask customerMask;
     public LayerMask policeMask;
     public LayerMask itemMask;
+    public LayerMask escapeMask;
     public Transform interactionVisual;
 
     public float currentInteractionRadius
@@ -63,8 +66,22 @@ public class CharacterController : MonoBehaviour
     [Header("Cage")]
     public GameObject cage;
 
+    [Header("Sounds")]
+    public AudioClip alert;
+    public AudioClip damage;
+    public AudioClip pickup;
+    public AudioClip loss;
+    public AudioClip profit;
+
     private GameObject currentCustomer;
     private bool inTransaction;
+
+    //Escaping stuff
+    public float leaveAnimTime;
+    public Ease leaveEase;
+    private float _escapeCountdown = 0;
+    private float _escapeCountdownMax = 3;
+    private bool _escaping = false;
 
     public enum State
     {
@@ -131,6 +148,10 @@ public class CharacterController : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
+                if (actions.Submit.WasPressed)
+                {
+                    UIManager.Instance.HideStartScreen();
+                }
                 break;
             case State.Active:
                 TransactionListener();
@@ -138,6 +159,7 @@ public class CharacterController : MonoBehaviour
                 UpdateInteractionRadius();
                 UpdateHeldItem();
                 CheckForThePolice();
+                CheckForEscape();
                 UpdateMoney();
                 CheckCustomer();
                 break;
@@ -339,6 +361,7 @@ public class CharacterController : MonoBehaviour
                 currentItem.transform.position = itemContainer.position;
                 currentItem.transform.SetParent(itemContainer);
                 SpawnManager.Instance.RemovedItem();
+                AudioController.Instance.Play(pickup);
             }
         }
     }
@@ -369,27 +392,75 @@ public class CharacterController : MonoBehaviour
             if (GameManager.Instance.Score >= hits[0].GetComponent<PoliceController>().moneyToTake)
             {
                 StartCoroutine(LoseMoney_Coroutine(hits[0].GetComponent<PoliceController>()));
-
             }
             else
             {
-                StartCoroutine(EndGame_Corouting());
+                StartCoroutine(EndGame_Lose_Coroutine());
             }
             acosted = true;
         }
     }
-    IEnumerator EndGame_Corouting()
+
+    private void CheckForEscape()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, escapeInteractionRadius, escapeMask);
+        if (hits.Length > 0)
+        {
+            Debug.Log("ESCAPE DETECED");
+            if (_escaping)
+            {
+                if (_escapeCountdown <= 0)
+                {
+                    Debug.Log("Youve Escaped!");
+                    StartCoroutine(EndGame_Win_Coroutine());
+                }
+                else
+                {
+                    UIManager.Instance.UpdateEscapeText("Escaping in " + Mathf.Ceil(_escapeCountdown).ToString());
+                    _escapeCountdown -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                _escaping = true;
+                _escapeCountdown = _escapeCountdownMax;
+            }
+        }
+        else
+        {
+            if (_escaping)
+            {
+                _escaping = false;
+            }
+        }
+    }
+
+    IEnumerator EndGame_Lose_Coroutine()
     {
         currentState = State.Idle;
         PoliceController.Open();
         GameObject newCage = Instantiate(cage, transform.position + (transform.up * 20), Quaternion.identity);
         bool cageWait = false;
         newCage.transform.SetParent(visual);
-        newCage.transform.DOLocalMove(visual.localPosition, .5f).OnComplete(()=> cageWait = true).SetEase(Ease.Linear);
-        yield return new WaitUntil(()=> cageWait == true);
+        newCage.transform.DOLocalMove(visual.localPosition, .5f).OnComplete(() => cageWait = true).SetEase(Ease.Linear);
+        yield return new WaitUntil(() => cageWait == true);
+        AudioController.Instance.Play(damage);
         yield return new WaitForSeconds(1f);
         GameManager.Instance.GameOver();
     }
+
+    IEnumerator EndGame_Win_Coroutine()
+    {
+        GameManager.Instance.PauseGame();
+        UIManager.Instance.UpdateEscapeText("YOU'VE ESCAPED!");
+        rigid.isKinematic = true;
+        transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase);
+        yield return new WaitForSeconds(2f);
+        UIManager.Instance.HideEscapeText();
+        yield return new WaitForSeconds(0.2f);
+        GameManager.Instance.GameOver();
+    }
+
     IEnumerator LoseMoney_Coroutine(PoliceController police)
     {
         currentState = State.Idle;
@@ -409,7 +480,11 @@ public class CharacterController : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, currentInteractionRadius, policeMask);
         foreach (Collider hit in hits)
         {
-            hit.GetComponent<PoliceController>().Aggravate();
+            if (hit.GetComponent<PoliceController>()._currentState != PoliceController.State.Chase)
+            {
+                hit.GetComponent<PoliceController>().Aggravate();
+                AudioController.Instance.Play(alert);
+            }
         }
     }
 
@@ -432,7 +507,6 @@ public class CharacterController : MonoBehaviour
 
     private void Yell(GameObject customer, int word)
     {
-        Debug.Log(word);
         currentInteractionRadius += yellRadiusIncrease;
 
         Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
@@ -451,7 +525,7 @@ public class CharacterController : MonoBehaviour
         }
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => DestroyYell(yell.gameObject)).SetEase(yellEase);
     }
 
     private void RecieveMoney(CustomerController customer, float value)
@@ -464,18 +538,23 @@ public class CharacterController : MonoBehaviour
         if (value > 0)
         {
             yell.color = Color.green;
+            AudioController.Instance.Play(profit);
+
         }
         else
         {
             yell.color = Color.red;
+            AudioController.Instance.Play(loss);
+
         }
         Vector3 to = transform.position + rand;
         to.y = Mathf.Clamp(to.y, transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => DestroyYell(yell.gameObject)).SetEase(yellEase);
     }
 
     private void LoseMoney(GameObject customer, float amount)
     {
+        AudioController.Instance.Play(loss);
         currentInteractionRadius += yellRadiusIncrease;
 
         Vector3 rand = Random.insideUnitSphere * yellLocationRadius;
@@ -488,7 +567,11 @@ public class CharacterController : MonoBehaviour
 
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
-        yell.transform.DOMove(to, yellTime).OnComplete(() => Destroy(yell)).SetEase(yellEase);
+        yell.transform.DOMove(to, yellTime).OnComplete(() => DestroyYell(yell.gameObject)).SetEase(yellEase);
     }
 
+    private void DestroyYell(GameObject yellObj)
+    {
+        Destroy(yellObj.transform.parent.gameObject);
+    }
 }
