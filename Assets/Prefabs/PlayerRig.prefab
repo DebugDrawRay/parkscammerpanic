@@ -624,7 +624,7 @@ MonoBehaviour:
     m_Bits: 2048
   escapeMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8192
   interactionVisual: {fileID: 4969855762155812}
   itemContainer: {fileID: 4568078999735172}
   ambientMoneyLoss: 1
