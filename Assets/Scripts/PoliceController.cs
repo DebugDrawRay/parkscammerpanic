@@ -32,6 +32,9 @@ public class PoliceController : AiController
     public float leaveAnimTime;
     public Ease leaveEase;
 
+    public GameObject DangerSphere;
+    private bool _innocent = true;
+
     public GameObject chaseLight;
 
     private State previousState = State.None;
@@ -104,6 +107,15 @@ public class PoliceController : AiController
         render.SetBlendShapeWeight(0, currentLight);
         render.SetBlendShapeWeight(1, currentDrawer);
         RunStates();
+
+        if (_innocent)
+        {
+            if (!CharacterController.Instance.Innocent)
+            {
+                DangerSphere.SetActive(true);
+                _innocent = false;
+            }
+        }
     }
 
     private void RunStates()
