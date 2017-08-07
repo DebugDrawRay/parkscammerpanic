@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
@@ -30,11 +29,15 @@ public class CharacterController : MonoBehaviour
     public float baseInteractionRadius;
     public float itemInteractionRadius;
     public float caughtInteractionRadius;
+    public float escapeInteractionRadius;
+
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
+
     public LayerMask customerMask;
     public LayerMask policeMask;
     public LayerMask itemMask;
+    public LayerMask escapeMask;
     public Transform interactionVisual;
 
     public float currentInteractionRadius
@@ -65,6 +68,13 @@ public class CharacterController : MonoBehaviour
 
     private GameObject currentCustomer;
     private bool inTransaction;
+
+    //Escaping stuff
+    public float leaveAnimTime;
+    public Ease leaveEase;
+    private float _escapeCountdown = 0;
+    private float _escapeCountdownMax = 3;
+    private bool _escaping = false;
 
     public enum State
     {
@@ -138,6 +148,7 @@ public class CharacterController : MonoBehaviour
                 UpdateInteractionRadius();
                 UpdateHeldItem();
                 CheckForThePolice();
+                CheckForEscape();
                 UpdateMoney();
                 CheckCustomer();
                 break;
@@ -373,12 +384,47 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                StartCoroutine(EndGame_Corouting());
+                StartCoroutine(EndGame_Lose_Coroutine());
             }
             acosted = true;
         }
     }
-    IEnumerator EndGame_Corouting()
+
+    private void CheckForEscape()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, escapeInteractionRadius, escapeMask);
+        if (hits.Length > 0)
+        {
+            Debug.Log("ESCAPE DETECED");
+            if (_escaping)
+            {
+                if (_escapeCountdown <= 0)
+                {
+                    Debug.Log("Youve Escaped!");
+                    StartCoroutine(EndGame_Win_Coroutine());
+                }
+                else
+                {
+                    UIManager.Instance.UpdateEscapeText("Escaping in " + Mathf.Ceil(_escapeCountdown).ToString());
+                    _escapeCountdown -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                _escaping = true;
+                _escapeCountdown = _escapeCountdownMax;
+            }
+        }
+        else
+        {
+            if (_escaping)
+            {
+                _escaping = false;
+            }
+        }
+    }
+
+    IEnumerator EndGame_Lose_Coroutine()
     {
         currentState = State.Idle;
         PoliceController.Open();
@@ -390,6 +436,19 @@ public class CharacterController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         GameManager.Instance.GameOver();
     }
+
+    IEnumerator EndGame_Win_Coroutine()
+    {
+        GameManager.Instance.PauseGame();
+        UIManager.Instance.UpdateEscapeText("YOU'VE ESCAPED!");
+        rigid.isKinematic = true;
+        transform.DOMove(transform.position + (transform.up * 30), leaveAnimTime).SetEase(leaveEase);
+        yield return new WaitForSeconds(2f);
+        UIManager.Instance.HideEscapeText();
+        yield return new WaitForSeconds(0.2f);
+        GameManager.Instance.GameOver();
+    }
+
     IEnumerator LoseMoney_Coroutine(PoliceController police)
     {
         currentState = State.Idle;

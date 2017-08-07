@@ -610,6 +610,7 @@ MonoBehaviour:
   baseInteractionRadius: 5
   itemInteractionRadius: 1
   caughtInteractionRadius: 1.5
+  escapeInteractionRadius: 0
   yellRadiusIncrease: 1.5
   ambientRadiusDecrease: 0.1
   customerMask:
@@ -621,6 +622,9 @@ MonoBehaviour:
   itemMask:
     serializedVersion: 2
     m_Bits: 2048
+  escapeMask:
+    serializedVersion: 2
+    m_Bits: 8192
   interactionVisual: {fileID: 4969855762155812}
   itemContainer: {fileID: 4568078999735172}
   ambientMoneyLoss: 1
@@ -631,6 +635,8 @@ MonoBehaviour:
   yellEase: 25
   yellLocationRadius: 1
   cage: {fileID: 1952657688166024, guid: 5160fb2feaa766c4c89b37f8f20703be, type: 2}
+  leaveAnimTime: 2
+  leaveEase: 17
   visual: {fileID: 4618399229958992}
 --- !u!114 &114789815129302724
 MonoBehaviour:
