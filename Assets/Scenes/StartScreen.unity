@@ -2312,14 +2312,14 @@ MonoBehaviour:
   LevelSelectScreen: {fileID: 140434190}
   startGameButton: {fileID: 408617583}
   LevelSelections:
-  - LevelImage: {fileID: 21300000, guid: dfdb56a240d550840ade9a42cb2eca15, type: 3}
-    LevelName: Level One
+  - LevelImage: {fileID: 21300000, guid: f7c864ae0bfd4774f9bf9787112b5b33, type: 3}
+    LevelName: Cyber Market
     SceneName: Level1
-  - LevelImage: {fileID: 21300000, guid: dfdb56a240d550840ade9a42cb2eca15, type: 3}
-    LevelName: Level Two
+  - LevelImage: {fileID: 21300000, guid: a9f5fc0471469764298f1937a89c744d, type: 3}
+    LevelName: Cyber Mall
     SceneName: Level2
-  - LevelImage: {fileID: 21300000, guid: dfdb56a240d550840ade9a42cb2eca15, type: 3}
-    LevelName: Level Three
+  - LevelImage: {fileID: 21300000, guid: 5e753fa4e97225641b3f74c89e094d56, type: 3}
+    LevelName: Cyber Alley
     SceneName: Level3
   LevelDisplay: {fileID: 240928179}
   LevelNameText: {fileID: 443428302}
