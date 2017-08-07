@@ -9,6 +9,7 @@ public class StartSceneController : MonoBehaviour
     public RectTransform StartScreen;
     public RectTransform LevelSelectScreen;
 
+    public Button startGameButton;
     [Header("Level Select")]
     public LevelSelection[] LevelSelections;
     public RectTransform LevelDisplay;
@@ -18,7 +19,7 @@ public class StartSceneController : MonoBehaviour
     private int _selectedLevel = 0;
 
     private int _offscreen = 2000;
-    private float _scrollSpeed = 0.6f;
+    private float _scrollSpeed = 0.4f;
 
     private void Start()
     {
@@ -32,13 +33,14 @@ public class StartSceneController : MonoBehaviour
 
     public void ShowLevelSelect()
     {
-        StartScreen.DOAnchorPos(new Vector3(-_offscreen, 0, 0), _scrollSpeed / 2f).SetEase(Ease.OutBounce);
-        LevelSelectScreen.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutBounce);
+        StartScreen.DOAnchorPos(new Vector3(-_offscreen, 0, 0), _scrollSpeed).SetEase(Ease.OutCubic);
+        LevelSelectScreen.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutCubic);
+        startGameButton.Select();
     }
 
     public void NextLevel()
     {
-        LevelDisplay.DOAnchorPos(new Vector3(-_offscreen, 0, 0), _scrollSpeed/2f).OnComplete(() => CompleteNextLevelMovement()).SetEase(Ease.InCubic);
+        LevelDisplay.DOAnchorPos(new Vector3(-_offscreen, 0, 0), _scrollSpeed).OnComplete(() => CompleteNextLevelMovement()).SetEase(Ease.OutCubic);
     }
 
     public void CompleteNextLevelMovement()
@@ -47,12 +49,12 @@ public class StartSceneController : MonoBehaviour
         UpdateLevelDisplay();
 
         LevelDisplay.anchoredPosition = new Vector3(_offscreen, 0, 0);
-        LevelDisplay.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutBounce);
+        LevelDisplay.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutCubic);
     }
 
     public void PreviousLevel()
     {
-        LevelDisplay.DOAnchorPos(new Vector3(_offscreen, 0, 0), _scrollSpeed/2f).OnComplete(() => CompletePreviousLevelMovement()).SetEase(Ease.InCubic);
+        LevelDisplay.DOAnchorPos(new Vector3(_offscreen, 0, 0), _scrollSpeed).OnComplete(() => CompletePreviousLevelMovement()).SetEase(Ease.OutCubic);
     }
 
     public void CompletePreviousLevelMovement()
@@ -61,7 +63,7 @@ public class StartSceneController : MonoBehaviour
         UpdateLevelDisplay();
 
         LevelDisplay.anchoredPosition = new Vector3(-_offscreen, 0, 0);
-        LevelDisplay.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutBounce);
+        LevelDisplay.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutCubic);
     }
 
     public void UpdateLevelDisplay()

@@ -16,6 +16,7 @@ public class PlayerActions : PlayerActionSet
 	public PlayerAction Yell2;
 	public PlayerAction Yell3;
 
+	public PlayerAction Submit;
 	public PlayerActions()
 	{
 		MoveUp = CreatePlayerAction("Move Up");
@@ -28,6 +29,8 @@ public class PlayerActions : PlayerActionSet
 		Yell1 = CreatePlayerAction("Yell 1");
 		Yell2 = CreatePlayerAction("Yell 2");
 		Yell3 = CreatePlayerAction("Yell 3");
+
+		Submit = CreatePlayerAction("Submit");
 	}
 
 	public static PlayerActions BindAll()
@@ -52,6 +55,10 @@ public class PlayerActions : PlayerActionSet
 		actions.Yell1.AddDefaultBinding(InputControlType.Action3);
 		actions.Yell2.AddDefaultBinding(InputControlType.Action1);
 		actions.Yell3.AddDefaultBinding(InputControlType.Action2);
+
+		actions.Submit.AddDefaultBinding(Key.Return);
+		actions.Submit.AddDefaultBinding(InputControlType.Action1);
+
 		return actions;
 	}
 }

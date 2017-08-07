@@ -35,7 +35,7 @@ public class PoliceController : AiController
     public GameObject chaseLight;
 
     private State previousState = State.None;
-    private State _currentState;
+    public State _currentState;
     private State currentState
     {
         get { return _currentState; }
