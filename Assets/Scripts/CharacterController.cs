@@ -83,6 +83,15 @@ public class CharacterController : MonoBehaviour
     private float _escapeCountdownMax = 3;
     private bool _escaping = false;
 
+    private bool _innocent = true;
+    public bool Innocent
+    {
+        get
+        {
+            return _innocent; 
+        }
+    }
+
     public enum State
     {
         None,
@@ -246,6 +255,8 @@ public class CharacterController : MonoBehaviour
                 GameObject newCustomer = GetClosestCustomer();
                 if (newCustomer != null && !newCustomer.GetComponent<CustomerController>().hasItem)
                 {
+                    if (_innocent) { _innocent = false; }
+
                     currentCustomer = newCustomer;
                     currentCustomer.GetComponent<CustomerController>().SetState(CustomerController.State.Attentive);
 
@@ -477,13 +488,16 @@ public class CharacterController : MonoBehaviour
 
     private void AggravatePolice()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, currentInteractionRadius, policeMask);
-        foreach (Collider hit in hits)
+        if (!_innocent)
         {
-            if (hit.GetComponent<PoliceController>()._currentState != PoliceController.State.Chase)
+            Collider[] hits = Physics.OverlapSphere(transform.position, currentInteractionRadius, policeMask);
+            foreach (Collider hit in hits)
             {
-                hit.GetComponent<PoliceController>().Aggravate();
-                AudioController.Instance.Play(alert);
+                if (hit.GetComponent<PoliceController>()._currentState != PoliceController.State.Chase)
+                {
+                    hit.GetComponent<PoliceController>().Aggravate();
+                    AudioController.Instance.Play(alert);
+                }
             }
         }
     }
