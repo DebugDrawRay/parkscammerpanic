@@ -21,6 +21,9 @@ public static class WordDatabase
         }
     }
 
+    private static Dictionary<int, AudioClip> WordSounds;
+
+
     private static Word[] _words;
     public static Word[] Words
     {
@@ -57,6 +60,16 @@ public static class WordDatabase
             w.Text = rawWord[0].Trim();
             w.Value = Convert.ToInt32(rawWord[1].Trim());
 
+            AudioClip clip = Resources.Load("WordSounds/" + rawWord[2].Trim()) as AudioClip;
+            if (clip != null)
+            {
+                w.AudioClip = clip;
+            }
+            else
+            {
+                Debug.Log("AUDIO FLILE MISSING " + rawWord[2].Trim());
+            }
+
             _words[i] = w;
 
             //Add index to value reference dictionary
@@ -76,6 +89,11 @@ public static class WordDatabase
     public static string GetWordText(int wordId)
     {
         return _words[wordId].Text;
+    }
+
+    public static AudioClip GetWordAudioClip(int wordId)
+    {
+        return Words[wordId].AudioClip;
     }
 
     public static int GetRandomWordId()
@@ -112,5 +130,6 @@ public struct Word
     public int Id;
     public string Text;
     public int Value;
+    public AudioClip AudioClip;
 }
 

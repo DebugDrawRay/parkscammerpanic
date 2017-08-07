@@ -526,6 +526,8 @@ public class CharacterController : MonoBehaviour
         Vector3 to = customer.transform.position + rand;
         to.y = Mathf.Clamp(to.y, customer.transform.position.y, Mathf.Infinity);
         yell.transform.DOMove(to, yellTime).OnComplete(() => DestroyYell(yell.gameObject)).SetEase(yellEase);
+
+        AudioController.Instance.Play(WordDatabase.GetWordAudioClip(word));
     }
 
     private void RecieveMoney(CustomerController customer, float value)
