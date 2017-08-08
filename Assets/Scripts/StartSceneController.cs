@@ -71,15 +71,15 @@ public class StartSceneController : MonoBehaviour
         LevelDisplay.DOAnchorPos(new Vector3(0, 0, 0), _scrollSpeed).SetEase(Ease.OutCubic);
     }
 
-    public void UpdateLevelDisplay()
-    {
-        LevelNameText.text = LevelSelections[_selectedLevel].LevelName;
-        LevelDisplayImage.sprite = LevelSelections[_selectedLevel].LevelImage;
-    }
-
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    private void UpdateLevelDisplay()
+    {
+        LevelNameText.text = LevelSelections[_selectedLevel].LevelName;
+        LevelDisplayImage.sprite = LevelSelections[_selectedLevel].LevelImage;
     }
 
     [System.Serializable]
