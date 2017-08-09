@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Hud")]
     public GameObject[] Options;
+    public GameObject[] MobileOptions;
     public Text CurrentTransactionScore;
     public Text TotalScore;
 
@@ -23,16 +24,18 @@ public class UIManager : MonoBehaviour
     public Text EscapeText;
 
     private bool _hidden = true;
+    private GameObject[] _options;
     private Text[] _optionButtonTexts;
 
     private void Awake()
     {
         Instance = this;
-        
-        _optionButtonTexts = new Text[Options.Length];
-        for (int i = 0; i < Options.Length; i++)
+
+        _options = Application.isMobilePlatform ? MobileOptions : Options;
+        _optionButtonTexts = new Text[_options.Length];
+        for (int i = 0; i < _options.Length; i++)
         {
-            _optionButtonTexts[i] = Options[i].GetComponentInChildren<Text>();
+            _optionButtonTexts[i] = _options[i].GetComponentInChildren<Text>();
         }
         TotalScore.text = "$0.00";
     }
@@ -46,7 +49,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTransactionScore(float score, float mod)
     {
-        CurrentTransactionScore.text = score.ToString() + " (" + mod + ")";
+        //CurrentTransactionScore.text = score.ToString() + " (" + mod + ")";
     }
 
     public void UpdateOptions(int[] newWords)

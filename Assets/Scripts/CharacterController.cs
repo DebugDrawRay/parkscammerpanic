@@ -2,6 +2,7 @@
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController : MonoBehaviour
@@ -9,10 +10,12 @@ public class CharacterController : MonoBehaviour
     public static CharacterController Instance;
 
     [Header("Movement")]
+    public NavMeshAgent agent;
     public float moveAccel;
     public float maxSpeed;
     private float currentSpeed;
     private Vector3 currentDirection;
+    private Vector3? currentTargetDestination;
 
     private Rigidbody rigid;
     private TransactionManager transaction
@@ -33,12 +36,14 @@ public class CharacterController : MonoBehaviour
 
     public float yellRadiusIncrease;
     public float ambientRadiusDecrease;
+    public Transform interactionVisual;
 
+    [Header("Layer Masks")]
     public LayerMask customerMask;
     public LayerMask policeMask;
     public LayerMask itemMask;
     public LayerMask escapeMask;
-    public Transform interactionVisual;
+    public LayerMask groundMask;
 
     public float currentInteractionRadius
     {
@@ -215,9 +220,31 @@ public class CharacterController : MonoBehaviour
     }
     private void MovementListener()
     {
-        Vector3 move = actions.Move.Value;
-        move.z = move.y;
-        move.y = 0;
+        //Click Navigation
+        Vector3 move = Vector3.zero;
+        if (Input.GetMouseButton(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100, groundMask))
+            {
+                currentTargetDestination = hit.point;
+            }
+        }
+
+        //If there is a queued destination from mouse click
+        if (currentTargetDestination != null)
+        {
+            move = (Vector3)currentTargetDestination - transform.position;
+            move.y = 0;
+        }
+        else
+        {
+            //Controller Input Navigation
+            move = actions.Move.Value;
+            move.z = move.y;
+            move.y = 0;
+        }
+
         if (move == Vector3.zero)
         {
             if (walkAnim.IsPlaying())
@@ -237,13 +264,19 @@ public class CharacterController : MonoBehaviour
                 walkAnim.Play();
             }
 
-            currentDirection = move;
+            currentDirection = move.normalized;
             currentSpeed += moveAccel;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
-            visual.transform.forward = currentDirection.normalized;
+            visual.transform.forward = currentDirection;
         }
         Vector3 movement = currentDirection * currentSpeed;
         rigid.MovePosition(transform.position + (movement * Time.deltaTime));
+
+        //Clear target destination if you've reached it (or close enough)
+        if (currentTargetDestination != null && Vector3.Distance(transform.position, (Vector3)currentTargetDestination) < 2f)
+        {
+            currentTargetDestination = null;
+        }
     }
 
     private void TransactionListener()

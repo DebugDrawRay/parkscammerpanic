@@ -271,7 +271,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1802642243459874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 24.33, y: 1.38, z: 2.14}
+  m_LocalPosition: {x: 0, y: 1.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4450473280010224}
@@ -605,6 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdf27094c555894db6ad538249c9511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
   moveAccel: 0.5
   maxSpeed: 10
   baseInteractionRadius: 5
@@ -613,6 +614,7 @@ MonoBehaviour:
   escapeInteractionRadius: 0
   yellRadiusIncrease: 1.5
   ambientRadiusDecrease: 0.1
+  interactionVisual: {fileID: 4969855762155812}
   customerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -625,7 +627,9 @@ MonoBehaviour:
   escapeMask:
     serializedVersion: 2
     m_Bits: 8192
-  interactionVisual: {fileID: 4969855762155812}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 16384
   itemContainer: {fileID: 4568078999735172}
   ambientMoneyLoss: 1
   timeToMoneyLoss: 3
